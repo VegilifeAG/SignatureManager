@@ -1,0 +1,54 @@
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Signatur Verwaltung.exe
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Signatur Verwaltung.deps.json
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Signatur Verwaltung.runtimeconfig.json
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Signatur Verwaltung.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Signatur Verwaltung.pdb
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur_Verwaltung.Form1.resources
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur_Verwaltung.Properties.Resources.resources
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur Verwaltung.csproj.GenerateResource.cache
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur Verwaltung.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur Verwaltung.AssemblyInfoInputs.cache
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur Verwaltung.AssemblyInfo.cs
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur Verwaltung.csproj.CoreCompileInputs.cache
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur Verwaltung.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\refint\Signatur Verwaltung.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur Verwaltung.pdb
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur Verwaltung.genruntimeconfig.cache
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\ref\Signatur Verwaltung.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur_Verwaltung.Password.resources
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur_Verwaltung.Settings.resources
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Azure.Core.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\JetBrains.Annotations.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.AspNetCore.Authorization.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.AspNetCore.Components.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.AspNetCore.Components.Authorization.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.AspNetCore.Components.Forms.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.AspNetCore.Components.Web.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.AspNetCore.Components.WebAssembly.Authentication.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.AspNetCore.Metadata.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.Authentication.WebAssembly.Msal.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.Extensions.Primitives.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.Graph.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.Graph.Core.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.Identity.Client.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Logging.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Microsoft.JSInterop.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\System.IO.Pipelines.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\System.Memory.Data.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Wangkanai.Graph.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Wangkanai.System.dll
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur Verwaltung.csproj.AssemblyReference.cache
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur.AD361E31.Up2Date
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows\Signatur_Verwaltung.Error.resources
+C:\Users\Marc Büttner\source\repos\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows\Tulpep.NotificationWindow.dll
