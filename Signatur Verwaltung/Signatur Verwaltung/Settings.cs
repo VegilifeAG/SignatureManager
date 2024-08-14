@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Graph;
@@ -19,6 +20,8 @@ namespace Signatur_Verwaltung
         public Settings()
         {
             InitializeComponent();
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            label6.Text = $"Version: {version}";
         }
 
         private void Settings_Load(object sender, EventArgs e)
@@ -166,6 +169,11 @@ namespace Signatur_Verwaltung
             {
                 MessageBox.Show("Eine oder mehrere Verbindungen sind fehlgeschlagen.", "Fehler - Signatur Verwaltung", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

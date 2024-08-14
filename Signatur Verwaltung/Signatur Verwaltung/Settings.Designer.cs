@@ -58,7 +58,7 @@
             // clientIDBox
             // 
             clientIDBox.Location = new Point(16, 88);
-            clientIDBox.Margin = new Padding(4, 4, 4, 4);
+            clientIDBox.Margin = new Padding(4);
             clientIDBox.Name = "clientIDBox";
             clientIDBox.PlaceholderText = "Client ID";
             clientIDBox.Size = new Size(400, 39);
@@ -67,7 +67,7 @@
             // tenantIDBox
             // 
             tenantIDBox.Location = new Point(16, 154);
-            tenantIDBox.Margin = new Padding(4, 4, 4, 4);
+            tenantIDBox.Margin = new Padding(4);
             tenantIDBox.Name = "tenantIDBox";
             tenantIDBox.PlaceholderText = "Tenant ID";
             tenantIDBox.Size = new Size(400, 39);
@@ -76,7 +76,7 @@
             // clientSecretBox
             // 
             clientSecretBox.Location = new Point(16, 221);
-            clientSecretBox.Margin = new Padding(4, 4, 4, 4);
+            clientSecretBox.Margin = new Padding(4);
             clientSecretBox.Name = "clientSecretBox";
             clientSecretBox.PasswordChar = '*';
             clientSecretBox.PlaceholderText = "Client Secret";
@@ -99,7 +99,7 @@
             signatureChannelComboBox.FormattingEnabled = true;
             signatureChannelComboBox.Items.AddRange(new object[] { "Marcel Bourquin on VEGILIFE-GRAPH-OCM", "Nadine Dahinden on VEGILIFE-GRAPH-OCM", "Yannick Wiss on VEGILIFE-GRAPH-OCM" });
             signatureChannelComboBox.Location = new Point(461, 88);
-            signatureChannelComboBox.Margin = new Padding(4, 4, 4, 4);
+            signatureChannelComboBox.Margin = new Padding(4);
             signatureChannelComboBox.Name = "signatureChannelComboBox";
             signatureChannelComboBox.Size = new Size(476, 40);
             signatureChannelComboBox.TabIndex = 5;
@@ -107,7 +107,7 @@
             // button1
             // 
             button1.Location = new Point(793, 221);
-            button1.Margin = new Padding(4, 4, 4, 4);
+            button1.Margin = new Padding(4);
             button1.Name = "button1";
             button1.Size = new Size(146, 44);
             button1.TabIndex = 6;
@@ -122,9 +122,9 @@
             label3.Location = new Point(16, 417);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
-            label3.Size = new Size(522, 32);
+            label3.Size = new Size(518, 32);
             label3.TabIndex = 7;
-            label3.Text = "(c) 2024 Marc Büttner - Alle rechte vorbehalten.";
+            label3.Text = "© 2024 Marc Büttner - Alle rechte vorbehalten.";
             // 
             // label4
             // 
@@ -142,37 +142,38 @@
             label5.Location = new Point(16, 372);
             label5.Margin = new Padding(4, 0, 4, 0);
             label5.Name = "label5";
-            label5.Size = new Size(269, 32);
+            label5.Size = new Size(268, 32);
             label5.TabIndex = 9;
-            label5.Text = "Lizenziert für VegilifeAG";
+            label5.Text = "Lizensiert für VegilifeAG";
             // 
             // label6
             // 
             label6.AutoSize = true;
             label6.ForeColor = SystemColors.AppWorkspace;
-            label6.Location = new Point(810, 417);
+            label6.Location = new Point(771, 417);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
-            label6.Size = new Size(130, 32);
+            label6.Size = new Size(166, 32);
             label6.TabIndex = 10;
-            label6.Text = "Version 1.8";
+            label6.Text = "Version 1.0.0.0";
             // 
             // label7
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 8F, FontStyle.Italic, GraphicsUnit.Point, 0);
             label7.ForeColor = SystemColors.AppWorkspace;
-            label7.Location = new Point(461, 163);
+            label7.Location = new Point(461, 145);
             label7.Margin = new Padding(4, 0, 4, 0);
             label7.Name = "label7";
             label7.Size = new Size(478, 30);
             label7.TabIndex = 11;
             label7.Text = "Powered by Microsoft 365 Graph and SharePoint";
+            label7.Click += label7_Click;
             // 
             // resetButton
             // 
             resetButton.Location = new Point(621, 221);
-            resetButton.Margin = new Padding(4, 4, 4, 4);
+            resetButton.Margin = new Padding(4);
             resetButton.Name = "resetButton";
             resetButton.Size = new Size(164, 44);
             resetButton.TabIndex = 12;
@@ -183,7 +184,7 @@
             // checkConnectionButton
             // 
             checkConnectionButton.Location = new Point(16, 283);
-            checkConnectionButton.Margin = new Padding(4, 4, 4, 4);
+            checkConnectionButton.Margin = new Padding(4);
             checkConnectionButton.Name = "checkConnectionButton";
             checkConnectionButton.Size = new Size(402, 44);
             checkConnectionButton.TabIndex = 13;
@@ -210,7 +211,7 @@
             Controls.Add(tenantIDBox);
             Controls.Add(clientIDBox);
             Controls.Add(label1);
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "Settings";
