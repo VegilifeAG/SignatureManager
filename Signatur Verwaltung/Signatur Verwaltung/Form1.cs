@@ -7,23 +7,42 @@ using System.Text.RegularExpressions;
 using Microsoft.Graph;
 using Microsoft.Identity.Client;
 using Microsoft.Toolkit.Uwp.Notifications;
-using Windows.ApplicationModel.VoiceCommands;
 using Windows.UI.Notifications;
+using System.Configuration;
+using System.Xml;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Signatur_Verwaltung
 {
     public partial class Form1 : Form
     {
-        private static string clientId = Properties.Settings.Default.ClientID;
-        private static string tenantId = Properties.Settings.Default.TenantID;
-        private static string clientSecret = Properties.Settings.Default.ClientSecret;
+        private static string clientId;
+        private static string tenantId;
+        private static string clientSecret;
+        private static int signatureChannelID;
+
         private System.Windows.Forms.Timer shutdownTimer;
         private bool wasOutlookRunning = false;
+        private static readonly string TempPath = Path.Combine(Path.GetTempPath(), "SignatureManager");
+        private static readonly string FileName = "SignatureManagerSettings.json";
+        private static readonly string FilePath = Path.Combine(TempPath, FileName);
 
         public Form1()
         {
             InitializeComponent();
+            LoadSettings();  // Lade Einstellungen in Variablen
             Initialize();
+        }
+
+        private void LoadSettings()
+        {
+            // Einstellungen in private Felder laden
+            clientId = Properties.Settings.Default.ClientID;
+            tenantId = Properties.Settings.Default.TenantID;
+            clientSecret = Properties.Settings.Default.ClientSecret;
+            signatureChannelID = Properties.Settings.Default.SignatureChannelID;
         }
 
         private async void Initialize()
@@ -43,10 +62,9 @@ namespace Signatur_Verwaltung
                     CloseOutlook();
                 }
             }
-
+            ImportSettingsFromTempFile();
             await BackupAndUpdateSignatures();
         }
-
 
         private bool CheckInternetConnection()
         {
@@ -109,7 +127,7 @@ namespace Signatur_Verwaltung
 
                 var graphClient = GetAuthenticatedGraphClient();
                 var userDownloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microsoft", "Signatures");
-                var backupFolder = Path.Combine(System.IO.Path.GetTempPath(), "SignaturesBackup");
+                var backupFolder = Path.Combine(System.IO.Path.GetTempPath(), "SignatureManager", "Backup");
 
                 // Backup the current Signatures folder
                 if (System.IO.Directory.Exists(userDownloadFolder))
@@ -158,8 +176,8 @@ namespace Signatur_Verwaltung
                 {
                     await NavigateAndDownload(graphClient, siteId, driveId, signaturesFolderId, userDownloadFolder);
                     updateIndeterminateToastNotification("Abgeschlossen", "");
-                    string currentVersion = GetCurrentVersion();
-                    //await CheckForUpdates(graphClient, currentVersion);
+                    ExportSettingsToTempFile();
+
                 }
                 else
                 {
@@ -192,8 +210,8 @@ namespace Signatur_Verwaltung
                     {
                         if (windowsItem.Name == "Windows" && windowsItem.Folder != null)
                         {
-                            string targetFolderName = Properties.Settings.Default.SignatureChannelID == 0 ? "Marcel Bourquin" :
-                                                      Properties.Settings.Default.SignatureChannelID == 1 ? "Nadine Dahinden" :
+                            string targetFolderName = signatureChannelID == 0 ? "Marcel Bourquin" :
+                                                      signatureChannelID == 1 ? "Nadine Dahinden" :
                                                       "Yannick Wiss";
 
                             var userItems = await graphClient.Sites[siteId].Drives[driveId].Items[windowsItem.Id].Children.Request().GetAsync();
@@ -395,161 +413,106 @@ namespace Signatur_Verwaltung
         }
 
 
-
-
-
-
-
-        private async Task CheckForUpdates(GraphServiceClient graphClient, string currentVersion)
-        {
-            MessageBox.Show($"Derzeit installierte Version: {currentVersion}", "Prüfen auf Updates", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            try
-            {
-                // Pfadangabe auf SharePoint
-                string sitePath = "sites/IT9";
-                string siteId = "vegilifeag966.sharepoint.com";
-
-                // Die Id des Ordners 'LiveSync' im Pfad 'IT9/General/Software/LiveSync'
-                var site = await graphClient.Sites.GetByPath(sitePath, siteId).Request().GetAsync();
-                var drive = await graphClient.Sites[site.Id].Drive.Request().GetAsync();
-                var rootItem = await graphClient.Sites[site.Id].Drives[drive.Id].Root.ItemWithPath("General/Software/.LiveSync").Request().GetAsync();
-                var updatesFolderId = rootItem.Id;
-
-                // Get the items (files) in the updates directory
-                var updateFiles = await graphClient.Sites[site.Id].Drives[drive.Id].Items[updatesFolderId].Children.Request().GetAsync();
-
-                string latestVersion = currentVersion;
-                string latestFileName = null;
-
-                foreach (var file in updateFiles)
-                {
-                    if (file.File != null)
-                    {
-                        // Extract version number from file name, e.g., "MyApp_v1.1.zip" -> "1.1"
-                        string fileVersion = ExtractVersionFromFileName(file.Name);
-
-                        // Compare with the current version
-                        if (IsNewerVersion(fileVersion, latestVersion))
-                        {
-                            latestVersion = fileVersion;
-                            latestFileName = file.Name;
-                        }
-                    }
-                }
-
-                // If a newer version is found
-                if (!string.IsNullOrEmpty(latestFileName) && IsNewerVersion(latestVersion, currentVersion))
-                {
-                    var result = MessageBox.Show(
-                        $"Derzeit installierte Version: {currentVersion}\nVerfügbare Version: {latestVersion}\n\nMöchten Sie jetzt aktualisieren?",
-                        "Update verfügbar",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        await DownloadAndUpdate(graphClient, site.Id, drive.Id, updatesFolderId, latestFileName);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show($"Sie haben bereits die neueste Version installiert.\nDerzeit installierte Version: {currentVersion}", "Keine Updates verfügbar", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Fehler beim Überprüfen auf Updates: {ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                errorToastNotification("Fehler beim Überprüfen auf Updates", $"Ein Fehler ist aufgetreten: {ex.Message}");
-            }
-        }
-
-        private string ExtractVersionFromFileName(string fileName)
-        {
-            // Example: Extract "1.1" from "MyApp_v1.1.zip"
-            var match = Regex.Match(fileName, @"v(\d+\.\d+)");
-            return match.Success ? match.Groups[1].Value : null;
-        }
-
-        private bool IsNewerVersion(string fileVersion, string currentVersion)
-        {
-            if (string.IsNullOrEmpty(fileVersion) || string.IsNullOrEmpty(currentVersion))
-                return false;
-
-            Version newVersion = new Version(fileVersion);
-            Version installedVersion = new Version(currentVersion);
-
-            return newVersion > installedVersion;
-        }
-
-        private async Task DownloadAndUpdate(GraphServiceClient graphClient, string siteId, string driveId, string updatesFolderId, string latestFileName)
+        public static void ExportSettingsToTempFile()
         {
             try
             {
-                // Download the file
-                var filePath = Path.Combine(Path.GetTempPath(), latestFileName);
-                var fileContent = await graphClient.Sites[siteId].Drives[driveId].Items[updatesFolderId].ItemWithPath(latestFileName).Content.Request().GetAsync();
-                using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                if (!System.IO.Directory.Exists(TempPath))
                 {
-                    await fileContent.CopyToAsync(fileStream);
+                    System.IO.Directory.CreateDirectory(TempPath);
                 }
 
-                MessageBox.Show($"Update erfolgreich heruntergeladen: {filePath}", "Update erfolgreich", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var settingsDict = new Dictionary<string, object>();
+                foreach (System.Configuration.SettingsProperty property in Properties.Settings.Default.Properties)
+                {
+                    string name = property.Name;
+                    var value = Properties.Settings.Default[name];
+                    settingsDict[name] = value;
+                }
 
-                // Implement your update logic here, e.g., extract and replace files, restart application, etc.
-                MessageBox.Show($"Die neue Version {latestFileName} wurde erfolgreich heruntergeladen und wird jetzt installiert.", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string json = System.Text.Json.JsonSerializer.Serialize(settingsDict, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+                System.IO.File.WriteAllText(FilePath, json);
 
-                // Migrate settings after update
-                MigrateSettings();
-
-                // Example: Run the installer (assuming it's a self-contained installer)
-                System.Diagnostics.Process.Start(filePath);
-                System.Windows.Forms.Application.Exit();
+                //MessageBox.Show($"Die Einstellungen wurden erfolgreich in die Datei '{FilePath}' exportiert.", "Export Erfolgreich", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Fehler beim Herunterladen der Update-Datei {latestFileName}: {ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                errorToastNotification("Fehler beim Update-Download", $"Datei: {latestFileName}\nFehler: {ex.Message}");
+                //MessageBox.Show($"Fehler beim Exportieren der Einstellungen: {ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void SaveCurrentSettings()
+        public static void ImportSettingsFromTempFile()
         {
-            Properties.Settings.Default.Save();
-        }
-
-        private void MigrateSettings()
-        {
-            if (!Properties.Settings.Default.HasUpgraded)
+            try
             {
-                Properties.Settings.Default.Upgrade();
-                Properties.Settings.Default.HasUpgraded = true;
+                if (!System.IO.File.Exists(FilePath))
+                {
+                    //MessageBox.Show($"Die Datei '{FilePath}' wurde nicht gefunden.", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string json = System.IO.File.ReadAllText(FilePath);
+                var settingsDict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, System.Text.Json.JsonElement>>(json);
+
+                foreach (var kvp in settingsDict)
+                {
+                    var property = Properties.Settings.Default.Properties[kvp.Key];
+                    if (property != null)
+                    {
+                        // Konvertiere JsonElement in den richtigen Typ
+                        object value = ConvertJsonElement(kvp.Value, property.PropertyType);
+                        Properties.Settings.Default[kvp.Key] = value;
+                    }
+                }
+
+                // Änderungen speichern
                 Properties.Settings.Default.Save();
+
+                // Anwenden der Änderungen
+                ApplySettings();
+
+                //MessageBox.Show("Die Einstellungen wurden erfolgreich wiederhergestellt und angewendet.", "Import Erfolgreich", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show($"Fehler beim Importieren der Einstellungen: {ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private string GetCurrentVersion()
+        private static object ConvertJsonElement(System.Text.Json.JsonElement element, Type targetType)
         {
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var versionAttribute = assembly.GetCustomAttribute<System.Reflection.AssemblyFileVersionAttribute>();
-            return versionAttribute?.Version;
+            if (targetType == typeof(int))
+            {
+                return element.GetInt32();
+            }
+            else if (targetType == typeof(double))
+            {
+                return element.GetDouble();
+            }
+            else if (targetType == typeof(bool))
+            {
+                return element.GetBoolean();
+            }
+            else if (targetType == typeof(string))
+            {
+                return element.GetString();
+            }
+            else
+            {
+                throw new NotSupportedException($"Der Typ '{targetType}' wird nicht unterstützt.");
+            }
         }
 
+        private static void ApplySettings()
+        {
+            // Beispiel: Wenn Einstellungen in Variablen gespeichert wurden, aktualisiere sie jetzt
+            clientId = Properties.Settings.Default.ClientID;
+            tenantId = Properties.Settings.Default.TenantID;
+            clientSecret = Properties.Settings.Default.ClientSecret;
+            signatureChannelID = Properties.Settings.Default.SignatureChannelID;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            // Hier können Sie weitere Aktualisierungen vornehmen, wenn dies erforderlich ist.
+        }
 
         private void einstellungenToolStripMenuItem_Click_1(object sender, EventArgs e)
         {

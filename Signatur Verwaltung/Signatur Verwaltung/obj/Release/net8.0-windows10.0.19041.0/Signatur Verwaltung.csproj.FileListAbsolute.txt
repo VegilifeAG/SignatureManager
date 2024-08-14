@@ -276,7 +276,6 @@ C:\Users\mkj-mb\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Release
 C:\Users\mkj-mb\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\Signatur Verwaltung.pdb
 C:\Users\mkj-mb\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\Signatur Verwaltung.genruntimeconfig.cache
 C:\Users\mkj-mb\source\repos\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\ref\Signatur Verwaltung.dll
-C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\System.Web.Services.Description.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\Signatur Verwaltung.exe
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\Signatur Verwaltung.dll.config
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\Signatur Verwaltung.deps.json
@@ -311,6 +310,7 @@ C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\Microsoft.IdentityModel.Tokens.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\Microsoft.JSInterop.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\Microsoft.Toolkit.Uwp.Notifications.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\Newtonsoft.Json.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\System.ComponentModel.Composition.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\System.ComponentModel.Composition.Registration.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\System.Data.Odbc.dll
@@ -337,6 +337,7 @@ C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\System.ServiceModel.Syndication.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\System.ServiceProcess.ServiceController.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\System.Speech.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\System.Web.Services.Description.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\Wangkanai.Graph.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\Wangkanai.System.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\cs\System.Private.ServiceModel.resources.dll

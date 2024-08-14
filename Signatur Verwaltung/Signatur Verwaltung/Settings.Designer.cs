@@ -168,7 +168,6 @@
             label7.Size = new Size(478, 30);
             label7.TabIndex = 11;
             label7.Text = "Powered by Microsoft 365 Graph and SharePoint";
-            label7.Click += label7_Click;
             // 
             // resetButton
             // 
