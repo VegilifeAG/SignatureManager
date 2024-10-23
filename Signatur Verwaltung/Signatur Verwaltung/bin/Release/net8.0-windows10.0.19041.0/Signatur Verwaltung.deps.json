@@ -13,21 +13,21 @@
           "Microsoft.Windows.Compatibility": "8.0.7",
           "Newtonsoft.Json": "13.0.3",
           "Wangkanai.Graph": "0.13.0",
-          "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.19041.34"
+          "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.19041.44"
         },
         "runtime": {
           "Signatur Verwaltung.dll": {}
         }
       },
-      "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.19041.34": {
+      "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.19041.44": {
         "runtime": {
           "Microsoft.Windows.SDK.NET.dll": {
-            "assemblyVersion": "10.0.19041.24",
-            "fileVersion": "10.0.19041.34"
+            "assemblyVersion": "10.0.19041.38",
+            "fileVersion": "10.0.19041.43"
           },
           "WinRT.Runtime.dll": {
-            "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.0.8.46841"
+            "assemblyVersion": "2.1.0.0",
+            "fileVersion": "2.1.2.47512"
           }
         }
       },
@@ -1476,7 +1476,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.19041.34": {
+    "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.19041.44": {
       "type": "runtimepack",
       "serviceable": false,
       "sha512": ""

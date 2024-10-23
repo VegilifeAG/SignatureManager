@@ -129,9 +129,17 @@ namespace Signatur_Verwaltung
                 var userDownloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microsoft", "Signatures");
                 var backupFolder = Path.Combine(System.IO.Path.GetTempPath(), "SignatureManager", "Backup");
 
+                // Überprüfen, ob das temporäre Verzeichnis existiert, und bei Bedarf erstellen
+                if (!System.IO.Directory.Exists(backupFolder))
+                {
+                    Debug.WriteLine($"Backup folder does not exist. Creating directory: {backupFolder}");
+                    System.IO.Directory.CreateDirectory(backupFolder);
+                }
+
                 // Backup the current Signatures folder
                 if (System.IO.Directory.Exists(userDownloadFolder))
                 {
+                    Debug.WriteLine($"Backing up signatures from: {userDownloadFolder} to {backupFolder}");
                     if (System.IO.Directory.Exists(backupFolder))
                     {
                         System.IO.Directory.Delete(backupFolder, true);
@@ -139,7 +147,12 @@ namespace Signatur_Verwaltung
                     System.IO.Directory.Move(userDownloadFolder, backupFolder);
                 }
 
-                System.IO.Directory.CreateDirectory(userDownloadFolder);
+                // Sicherstellen, dass das Benutzer-Download-Verzeichnis existiert
+                if (!System.IO.Directory.Exists(userDownloadFolder))
+                {
+                    Debug.WriteLine($"User signatures folder does not exist. Creating directory: {userDownloadFolder}");
+                    System.IO.Directory.CreateDirectory(userDownloadFolder);
+                }
 
                 Debug.WriteLine("Getting site and drive information...");
                 var site = await graphClient.Sites.GetByPath("sites/IT9", "vegilifeag966.sharepoint.com").Request().GetAsync();
@@ -176,8 +189,9 @@ namespace Signatur_Verwaltung
                 {
                     await NavigateAndDownload(graphClient, siteId, driveId, signaturesFolderId, userDownloadFolder);
                     updateIndeterminateToastNotification("Abgeschlossen", "");
+                    await Task.Delay(2000);
+                    ToastNotificationManagerCompat.History.Remove("ProcessToast", "SignatureUpdateProcess");
                     ExportSettingsToTempFile();
-
                 }
                 else
                 {
@@ -187,8 +201,12 @@ namespace Signatur_Verwaltung
             }
             catch (Exception ex)
             {
+                // Fehlernachricht und Stack-Trace ausgeben
                 Debug.WriteLine($"An error occurred: {ex.Message}");
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Debug.WriteLine($"StackTrace: {ex.StackTrace}");
+
+                // Zeige detaillierte Fehlermeldung an
+                MessageBox.Show($"An error occurred: {ex.Message}\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (wasOutlookRunning)
@@ -360,7 +378,7 @@ namespace Signatur_Verwaltung
             var toast = new ToastNotification(toastContent.GetXml())
             {
                 Tag = "ProcessToast",
-                Group = "SignatureUpdateProcess"
+                Group = "SignatureUpdateProcess",
             };
 
             var data = new NotificationData();
@@ -378,6 +396,7 @@ namespace Signatur_Verwaltung
             data.Values["processState"] = processState;
             data.Values["processTitle"] = processTitle;
 
+            // Aktualisiere die Toast-Benachrichtigung mit den neuen Daten
             ToastNotificationManagerCompat.CreateToastNotifier().Update(data, "ProcessToast", "SignatureUpdateProcess");
         }
 

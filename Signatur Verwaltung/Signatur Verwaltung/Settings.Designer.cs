@@ -97,7 +97,7 @@
             // signatureChannelComboBox
             // 
             signatureChannelComboBox.FormattingEnabled = true;
-            signatureChannelComboBox.Items.AddRange(new object[] { "Marcel Bourquin on VEGILIFE-GRAPH-OCM", "Nadine Dahinden on VEGILIFE-GRAPH-OCM", "Yannick Wiss on VEGILIFE-GRAPH-OCM" });
+            signatureChannelComboBox.Items.AddRange(new object[] { "Marcel Bourquin on VEGILIFE-GRAPH-OCM", "Debora Staub on VEGILIFE-GRAPH-OCM", "Yannick Wiss on VEGILIFE-GRAPH-OCM" });
             signatureChannelComboBox.Location = new Point(461, 88);
             signatureChannelComboBox.Margin = new Padding(4);
             signatureChannelComboBox.Name = "signatureChannelComboBox";
