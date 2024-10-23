@@ -34,6 +34,7 @@ C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\publish\Microsoft.IdentityModel.Tokens.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\publish\Microsoft.JSInterop.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\publish\Microsoft.Toolkit.Uwp.Notifications.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\publish\Newtonsoft.Json.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\publish\System.ComponentModel.Composition.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\publish\System.ComponentModel.Composition.Registration.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\publish\System.Data.Odbc.dll

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("©2024 MIBUE.NET Ltd & Marc Büttner")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("3.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fb88b1bfc934762003701c9d22b612a9bed045ac")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ceccc9e3e8ca667e1f2e97dadc2d579cf7987cce")]
 [assembly: System.Reflection.AssemblyProductAttribute("Signatur Verwaltung")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Signatur Verwaltung")]
 [assembly: System.Reflection.AssemblyVersionAttribute("3.1")]

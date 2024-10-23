@@ -274,6 +274,7 @@ namespace Signatur_Verwaltung
                     if (!fileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase) &&
                         !fileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) &&
                         !fileName.EndsWith(".thmx", StringComparison.OrdinalIgnoreCase) &&
+                        !fileName.EndsWith(".gif", StringComparison.OrdinalIgnoreCase) &&
                         !fileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
                     {
                         updateIndeterminateToastNotification("Aktualisieren...", displayFileName); // Update toast notification dynamically
