@@ -229,7 +229,7 @@ namespace Signatur_Verwaltung
                         if (windowsItem.Name == "Windows" && windowsItem.Folder != null)
                         {
                             string targetFolderName = signatureChannelID == 0 ? "Marcel Bourquin" :
-                                                      signatureChannelID == 1 ? "Nadine Dahinden" :
+                                                      signatureChannelID == 1 ? "Debora Staub" :
                                                       "Yannick Wiss";
 
                             var userItems = await graphClient.Sites[siteId].Drives[driveId].Items[windowsItem.Id].Children.Request().GetAsync();
