@@ -53,7 +53,7 @@ namespace Signatur_Verwaltung
                 return;
             }
 
-            if (IsOutlookRunning())
+            /*if (IsOutlookRunning())
             {
                 wasOutlookRunning = true;
                 var result = MessageBox.Show("Outlook muss zum Aktualisieren der Signaturen geschlossen werden. Möchten Sie Outlook jetzt schließen?", "Warnung - Signatur Verwaltung", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
@@ -61,7 +61,7 @@ namespace Signatur_Verwaltung
                 {
                     CloseOutlook();
                 }
-            }
+            }*/
             ImportSettingsFromTempFile();
             await BackupAndUpdateSignatures();
         }
@@ -87,7 +87,7 @@ namespace Signatur_Verwaltung
             return System.Diagnostics.Process.GetProcessesByName("OUTLOOK").Any();
         }
 
-        private void CloseOutlook()
+        /*private void CloseOutlook()
         {
             var outlookProcesses = System.Diagnostics.Process.GetProcessesByName("OUTLOOK");
             foreach (var process in outlookProcesses)
@@ -116,7 +116,7 @@ namespace Signatur_Verwaltung
             }
 
             MessageBox.Show("OUTLOOK.EXE konnte nicht gefunden werden. Bitte starten Sie Outlook manuell.", "Fehler - Signatur Verwaltung", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        }*/
 
         private async Task BackupAndUpdateSignatures()
         {
@@ -209,10 +209,10 @@ namespace Signatur_Verwaltung
                 MessageBox.Show($"An error occurred: {ex.Message}\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            if (wasOutlookRunning)
+            /*if (wasOutlookRunning)
             {
                 StartOutlook();
-            }
+            }*/
         }
 
 
