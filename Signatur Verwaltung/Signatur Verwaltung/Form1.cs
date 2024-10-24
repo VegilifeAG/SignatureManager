@@ -367,7 +367,7 @@ namespace Signatur_Verwaltung
         {
             var toastContent = new ToastContentBuilder()
             .SetToastDuration(ToastDuration.Long)
-            .AddText("Signaturen werden aktualsiert...")
+            .AddText("Signaturen werden aktualisiert...")
             .AddVisualChild(new AdaptiveProgressBar()
             {
                 Title = new BindableString("processTitle"),
