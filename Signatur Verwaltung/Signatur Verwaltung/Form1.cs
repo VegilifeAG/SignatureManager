@@ -93,13 +93,13 @@ namespace Signatur_Verwaltung
                 return;
             }
 
+            ImportSettingsFromTempFile();
+
             var graphClient = GetAuthenticatedGraphClient();
             var site = await graphClient.Sites.GetByPath("sites/IT9", "vegilifeag966.sharepoint.com").Request().GetAsync();
             siteId = site.Id;
 
             await RegisterDeviceIfNotExists();
-
-            ImportSettingsFromTempFile();
             await BackupAndUpdateSignatures();
         }
 
