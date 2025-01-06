@@ -13,6 +13,11 @@ using System.Xml;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.ComponentModel;
+using System.IO;
+using Microsoft.Graph;
+using OfficeOpenXml;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Signatur_Verwaltung
 {
@@ -21,7 +26,9 @@ namespace Signatur_Verwaltung
         private static string clientId;
         private static string tenantId;
         private static string clientSecret;
+        private static string siteId;
         private static int signatureChannelID;
+        private static bool isRemoteUpdate;
 
         private System.Windows.Forms.Timer shutdownTimer;
         private bool wasOutlookRunning = false;
@@ -29,11 +36,29 @@ namespace Signatur_Verwaltung
         private static readonly string FileName = "SignatureManagerSettings.json";
         private static readonly string FilePath = Path.Combine(TempPath, FileName);
 
+        private System.Windows.Forms.Timer listCheckTimer;
+
         public Form1()
         {
             InitializeComponent();
             LoadSettings();  // Lade Einstellungen in Variablen
             Initialize();
+
+            // Timer initialisieren
+            listCheckTimer = new System.Windows.Forms.Timer();
+            listCheckTimer.Interval = 60000; // 60 Sekunden
+            listCheckTimer.Tick += ListCheckTimer_Tick;
+            listCheckTimer.Start();
+
+            this.FormClosing += Form1_FormClosing;
+        }
+
+        private async void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            await UpdateSharePointListItem(
+                status: "offline",              
+                updateRequestor: "local"         
+            );
         }
 
         private void LoadSettings()
@@ -45,6 +70,21 @@ namespace Signatur_Verwaltung
             signatureChannelID = Properties.Settings.Default.SignatureChannelID;
         }
 
+        private async void ListCheckTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                var graphClient = GetAuthenticatedGraphClient();
+                var site = await graphClient.Sites.GetByPath("sites/IT9", "vegilifeag966.sharepoint.com").Request().GetAsync();
+                var siteId = site.Id;
+                await CheckSharePointListForUpdates();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Error during periodic list check: {ex.Message}");
+            }
+        }
+
         private async void Initialize()
         {
             if (!CheckInternetConnection())
@@ -53,15 +93,12 @@ namespace Signatur_Verwaltung
                 return;
             }
 
-            /*if (IsOutlookRunning())
-            {
-                wasOutlookRunning = true;
-                var result = MessageBox.Show("Outlook muss zum Aktualisieren der Signaturen geschlossen werden. Möchten Sie Outlook jetzt schließen?", "Warnung - Signatur Verwaltung", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (result == DialogResult.OK)
-                {
-                    CloseOutlook();
-                }
-            }*/
+            var graphClient = GetAuthenticatedGraphClient();
+            var site = await graphClient.Sites.GetByPath("sites/IT9", "vegilifeag966.sharepoint.com").Request().GetAsync();
+            siteId = site.Id;
+
+            await RegisterDeviceIfNotExists();
+
             ImportSettingsFromTempFile();
             await BackupAndUpdateSignatures();
         }
@@ -82,48 +119,18 @@ namespace Signatur_Verwaltung
             }
         }
 
-        private bool IsOutlookRunning()
-        {
-            return System.Diagnostics.Process.GetProcessesByName("OUTLOOK").Any();
-        }
 
-        /*private void CloseOutlook()
-        {
-            var outlookProcesses = System.Diagnostics.Process.GetProcessesByName("OUTLOOK");
-            foreach (var process in outlookProcesses)
-            {
-                process.Kill();
-                process.WaitForExit();
-            }
-        }
-
-        private void StartOutlook()
-        {
-            string[] possiblePaths = {
-                @"C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE",
-                @"C:\Program Files (x86)\Microsoft Office\root\Office16\OUTLOOK.EXE",
-                @"C:\Program Files\Microsoft Office\Office15\OUTLOOK.EXE",
-                @"C:\Program Files (x86)\Microsoft Office\Office15\OUTLOOK.EXE",
-            };
-
-            foreach (var path in possiblePaths)
-            {
-                if (System.IO.File.Exists(path))
-                {
-                    System.Diagnostics.Process.Start(path);
-                    return;
-                }
-            }
-
-            MessageBox.Show("OUTLOOK.EXE konnte nicht gefunden werden. Bitte starten Sie Outlook manuell.", "Fehler - Signatur Verwaltung", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }*/
 
         private async Task BackupAndUpdateSignatures()
         {
             try
             {
                 // Startmeldung anzeigen
-                indeterminateToastNotification("Initialisieren...", "");
+                if (isRemoteUpdate == true) {
+                    indeterminateToastNotification("Initialisieren... - Von Ihrer Organisation angefordert.", "");
+                } else {
+                    indeterminateToastNotification("Initialisieren...", "");
+                }
 
                 var graphClient = GetAuthenticatedGraphClient();
                 var userDownloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microsoft", "Signatures");
@@ -132,14 +139,14 @@ namespace Signatur_Verwaltung
                 // Überprüfen, ob das temporäre Verzeichnis existiert, und bei Bedarf erstellen
                 if (!System.IO.Directory.Exists(backupFolder))
                 {
-                    Debug.WriteLine($"Backup folder does not exist. Creating directory: {backupFolder}");
+                    Trace.WriteLine($"Backup folder does not exist. Creating directory: {backupFolder}");
                     System.IO.Directory.CreateDirectory(backupFolder);
                 }
 
                 // Backup the current Signatures folder
                 if (System.IO.Directory.Exists(userDownloadFolder))
                 {
-                    Debug.WriteLine($"Backing up signatures from: {userDownloadFolder} to {backupFolder}");
+                    Trace.WriteLine($"Backing up signatures from: {userDownloadFolder} to {backupFolder}");
                     if (System.IO.Directory.Exists(backupFolder))
                     {
                         System.IO.Directory.Delete(backupFolder, true);
@@ -150,74 +157,78 @@ namespace Signatur_Verwaltung
                 // Sicherstellen, dass das Benutzer-Download-Verzeichnis existiert
                 if (!System.IO.Directory.Exists(userDownloadFolder))
                 {
-                    Debug.WriteLine($"User signatures folder does not exist. Creating directory: {userDownloadFolder}");
+                    Trace.WriteLine($"User signatures folder does not exist. Creating directory: {userDownloadFolder}");
                     System.IO.Directory.CreateDirectory(userDownloadFolder);
                 }
 
-                Debug.WriteLine("Getting site and drive information...");
-                var site = await graphClient.Sites.GetByPath("sites/IT9", "vegilifeag966.sharepoint.com").Request().GetAsync();
-                var siteId = site.Id;
-
+                Trace.WriteLine("Getting site and drive information...");
                 var drive = await graphClient.Sites[siteId].Drive.Request().GetAsync();
                 var driveId = drive.Id;
 
-                var rootItems = await graphClient.Sites[siteId].Drives[driveId].Root.Children.Request().GetAsync();
-                string signaturesFolderId = null;
+                // Suche gezielt nach dem 'Signatures'-Ordner
+                var searchResult = await graphClient.Sites[siteId].Drives[driveId]
+                    .Root
+                    .Search("Signatures")
+                    .Request()
+                    .GetAsync();
 
-                foreach (var item in rootItems)
+                var signatureFolder = searchResult.FirstOrDefault(item => item.Folder != null);
+                if (signatureFolder != null)
                 {
-                    if (item.Name == "General" && item.Folder != null)
-                    {
-                        var generalItems = await graphClient.Sites[siteId].Drives[driveId].Items[item.Id].Children.Request().GetAsync();
+                    await UpdateSharePointListItem(
+                        status: "updating",                  // Neuer Status
+                        updateRequestor: isRemoteUpdate ? "remote" : "local"          // Anfragender
+                    );
 
-                        foreach (var generalItem in generalItems)
-                        {
-                            if (generalItem.Name == "Signatures" && generalItem.Folder != null)
-                            {
-                                signaturesFolderId = generalItem.Id;
-                                break;
-                            }
-                        }
-                        if (signaturesFolderId != null)
-                        {
-                            break;
-                        }
-                    }
-                }
+                    var signaturesFolderId = signatureFolder.Id;
+                    Trace.WriteLine($"Found Signatures folder: {signatureFolder.Name} (ID: {signaturesFolderId})");
 
-                if (signaturesFolderId != null)
-                {
+                    // Navigiere und lade den Inhalt des Ordners herunter
                     await NavigateAndDownload(graphClient, siteId, driveId, signaturesFolderId, userDownloadFolder);
                     updateIndeterminateToastNotification("Abgeschlossen", "");
+
+                    if (isRemoteUpdate == true) {
+                        updateIndeterminateToastNotification("Abgeschlossen - Von Ihrer Organisation angefordert.", "");
+                    } else {
+                        updateIndeterminateToastNotification("Abgeschlossen", "");
+                    }
+
                     await Task.Delay(2000);
                     ToastNotificationManagerCompat.History.Remove("ProcessToast", "SignatureUpdateProcess");
                     ExportSettingsToTempFile();
+                    await UpdateSharePointListItem(
+                        status: "idle",                  // Neuer Status
+                        updateRequestor: "local" // Anfragender
+                    );
+                    isRemoteUpdate = false;
                 }
                 else
                 {
                     MessageBox.Show("Signatures folder not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Debug.WriteLine("Signatures folder not found.");
+                    Trace.WriteLine("Signatures folder not found.");
                 }
             }
             catch (Exception ex)
             {
                 // Fehlernachricht und Stack-Trace ausgeben
-                Debug.WriteLine($"An error occurred: {ex.Message}");
-                Debug.WriteLine($"StackTrace: {ex.StackTrace}");
+                Trace.WriteLine($"An error occurred: {ex.Message}");
+                Trace.WriteLine($"StackTrace: {ex.StackTrace}");
 
                 // Zeige detaillierte Fehlermeldung an
                 MessageBox.Show($"An error occurred: {ex.Message}\n{ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            /*if (wasOutlookRunning)
-            {
-                StartOutlook();
-            }*/
         }
 
 
         private async Task NavigateAndDownload(GraphServiceClient graphClient, string siteId, string driveId, string signaturesFolderId, string userDownloadFolder)
         {
+            string currentDeviceName = Environment.MachineName; // Aktueller PC-Name
+
+            // Zielordner ermitteln (remote oder lokal)
+            string targetUser = await GetTargetFolder(graphClient, currentDeviceName, signatureChannelID);
+            Trace.WriteLine($"Using target folder: {targetUser}");
+
+            // Suche und Herunterladen der Signaturen basierend auf dem Zielordner
             var liveSyncItems = await graphClient.Sites[siteId].Drives[driveId].Items[signaturesFolderId].Children.Request().GetAsync();
             foreach (var liveSyncItem in liveSyncItems)
             {
@@ -228,23 +239,25 @@ namespace Signatur_Verwaltung
                     {
                         if (windowsItem.Name == "Windows" && windowsItem.Folder != null)
                         {
-                            string targetFolderName = signatureChannelID == 0 ? "Marcel Bourquin" :
-                                                      signatureChannelID == 1 ? "Debora Staub" :
-                                                      "Yannick Wiss";
-
                             var userItems = await graphClient.Sites[siteId].Drives[driveId].Items[windowsItem.Id].Children.Request().GetAsync();
                             foreach (var userItem in userItems)
                             {
-                                if (userItem.Name == targetFolderName && userItem.Folder != null)
+                                if (userItem.Name == targetUser && userItem.Folder != null)
                                 {
+                                    Trace.WriteLine($"Folder for user '{targetUser}' found in SharePoint.");
                                     var items = await graphClient.Sites[siteId].Drives[driveId].Items[userItem.Id].Children.Request().GetAsync();
                                     await ProcessItems(graphClient, siteId, driveId, items, userDownloadFolder);
+                                    return; // Fertig, Ordner gefunden und verarbeitet
                                 }
                             }
+
+                            Trace.WriteLine($"Folder for user '{targetUser}' does not exist in SharePoint.");
                         }
                     }
                 }
             }
+
+            Trace.WriteLine($"No matching folder found for user '{targetUser}'.");
         }
 
         private async Task ProcessItems(GraphServiceClient graphClient, string siteId, string driveId, IEnumerable<DriveItem> items, string userDownloadFolder)
@@ -277,7 +290,11 @@ namespace Signatur_Verwaltung
                         !fileName.EndsWith(".gif", StringComparison.OrdinalIgnoreCase) &&
                         !fileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
                     {
-                        updateIndeterminateToastNotification("Aktualisieren...", displayFileName); // Update toast notification dynamically
+                        if (isRemoteUpdate == true) {
+                            updateIndeterminateToastNotification("Aktualisieren... - Von Ihrer Organisation angefordert.", displayFileName); // Update toast notification dynamically
+                        } else {
+                            updateIndeterminateToastNotification("Aktualisieren...", displayFileName); // Update toast notification dynamically
+                        }
                     }
 
                     try
@@ -287,11 +304,11 @@ namespace Signatur_Verwaltung
                         {
                             await fileContent.CopyToAsync(fileStream);
                         }
-                        //Debug.WriteLine($"Downloaded file: {filePath}");
+                        //Trace.WriteLine($"Downloaded file: {filePath}");
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine($"Failed to download {fileName}: {ex.Message}");
+                        Trace.WriteLine($"Failed to download {fileName}: {ex.Message}");
                         errorToastNotification("Fehler beim Herunterladen der Datei", $"Datei: {fileName}\nFehler: {ex.Message}");
                     }
                 }
@@ -328,13 +345,13 @@ namespace Signatur_Verwaltung
                     requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
                 });
 
-                Debug.WriteLine("Authenticated successfully.");
+                Trace.WriteLine("Authenticated successfully.");
                 return new GraphServiceClient(authProvider);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Authentication failed: {ex.Message}");
-                Debug.WriteLine($"Exception: {ex}");
+                Trace.WriteLine($"Authentication failed: {ex.Message}");
+                Trace.WriteLine($"Exception: {ex}");
                 throw;
             }
         }
@@ -432,6 +449,36 @@ namespace Signatur_Verwaltung
             }
         }
 
+        private async Task userAccountControlAuthAsync(Func<Task> successProcess)
+        {
+            try
+            {
+                var procInfo = new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    FileName = "powershell.exe",
+                    Verb = "runas",
+                    Arguments = "-Command \"Write-Output 'UAC Authentifizierung erfolgreich'\"",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                var process = System.Diagnostics.Process.Start(procInfo);
+                process.WaitForExit();
+
+                if (process.ExitCode == 0)
+                {
+                    await successProcess();
+                }
+                else
+                {
+                    MessageBox.Show("Die erforderlichen Administratorrechte wurden nicht erteilt.", "Zugriff verweigert", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Die erforderlichen Administratorrechte wurden nicht erteilt.", "Zugriff verweigert", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         public static void ExportSettingsToTempFile()
         {
@@ -536,7 +583,8 @@ namespace Signatur_Verwaltung
 
         private void einstellungenToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            userAccountControlAuth(() => {
+            userAccountControlAuth(() =>
+            {
                 Settings settingsForm = new Settings();
                 settingsForm.ShowDialog();
             });
@@ -547,11 +595,290 @@ namespace Signatur_Verwaltung
             BackupAndUpdateSignatures();
         }
 
-        private void beendenToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void beendenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            userAccountControlAuth(() => {
-                System.Windows.Forms.Application.Exit();
+            await userAccountControlAuthAsync(async () =>
+            {
+                try
+                {
+                    string currentDeviceName = Environment.MachineName;
+                    var graphClient = GetAuthenticatedGraphClient();
+                    var site = await graphClient.Sites.GetByPath("sites/IT9", "vegilifeag966.sharepoint.com").Request().GetAsync();
+
+                    await UpdateSharePointListItem(
+                        status: "offline",
+                        updateRequestor: "local"
+                    );
+
+                    Trace.WriteLine($"Device '{currentDeviceName}' status updated to 'offline' before exiting.");
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine($"Error updating status to 'offline' before exiting: {ex.Message}");
+                }
+                finally
+                {
+                    System.Windows.Forms.Application.Exit();
+                }
             });
+        }
+
+
+        private async Task UpdateSharePointListItem(string status, string updateRequestor)
+        {
+            try
+            {
+                var graphClient = GetAuthenticatedGraphClient();
+
+                // Alle Listeneinträge abrufen
+                Trace.WriteLine("Fetching all items from SharePoint list...");
+                var listItems = await graphClient.Sites[siteId]
+                    .Lists["Devices"]
+                    .Items
+                    .Request()
+                    .Expand("fields") // WICHTIG: Felder explizit anfordern
+                    .GetAsync();
+
+                // Manuell nach dem DeviceName filtern
+                Trace.WriteLine("Filtering items locally...");
+                var existingItem = listItems.CurrentPage.FirstOrDefault(item =>
+                    item.Fields != null &&
+                    item.Fields.AdditionalData != null &&
+                    item.Fields.AdditionalData.ContainsKey("DeviceName") && // Ersetze "DeviceName" mit dem internen Namen
+                    item.Fields.AdditionalData["DeviceName"] != null &&
+                    item.Fields.AdditionalData["DeviceName"].ToString().Equals(Environment.MachineName, StringComparison.OrdinalIgnoreCase));
+
+                if (existingItem != null)
+                {
+                    // Eintrag aktualisieren
+                    Trace.WriteLine($"Updating existing item for device '{Environment.MachineName}'...");
+                    var itemId = existingItem.Id;
+                    var fields = new FieldValueSet
+                    {
+                        AdditionalData = new Dictionary<string, object>
+                {
+                    { "AppVersion", Assembly.GetExecutingAssembly().GetName().Version },
+                    { "Status", status }, // Ersetze "Status" mit dem internen Namen der Spalte
+                    { "LastUpdate", DateTime.Now.ToString("dd.MM.yyyy - HH:mm") }, // Aktualisiere das Datum
+                    { "UpdateRequestor", updateRequestor } // Ersetze "UpdateRequestor" mit dem internen Namen
+                }
+                    };
+
+                    await graphClient.Sites[siteId]
+                        .Lists["Devices"]
+                        .Items[itemId]
+                        .Fields
+                        .Request()
+                        .UpdateAsync(fields);
+
+                    Trace.WriteLine($"Updated device '{Environment.MachineName}' with status '{status}' in SharePoint list.");
+                }
+                else
+                {
+                    // Kein Eintrag gefunden
+                    Trace.WriteLine($"Device '{Environment.MachineName}' not found in SharePoint list. No updates made.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Error interacting with SharePoint list: {ex.Message}");
+            }
+        }
+
+
+        private async Task CheckSharePointListForUpdates()
+        {
+            try
+            {
+                var graphClient = GetAuthenticatedGraphClient();
+
+                // Alle Listeneinträge abrufen
+                Trace.WriteLine("Fetching all items from SharePoint list...");
+                var listItems = await graphClient.Sites[siteId]
+                    .Lists["Devices"]
+                    .Items
+                    .Request()
+                    .Expand("fields") // Felder explizit anfordern
+                    .GetAsync();
+
+                // Überprüfung: Status = "requested" und UpdateRequestor = "remote"
+                var matchingItems = listItems.CurrentPage.Where(item =>
+                    item.Fields != null &&
+                    item.Fields.AdditionalData != null &&
+                    item.Fields.AdditionalData.ContainsKey("Status") &&
+                    item.Fields.AdditionalData["Status"] != null &&
+                    item.Fields.AdditionalData["Status"].ToString().Equals("requested", StringComparison.OrdinalIgnoreCase) &&
+                    item.Fields.AdditionalData.ContainsKey("UpdateRequestor") &&
+                    item.Fields.AdditionalData["UpdateRequestor"] != null &&
+                    item.Fields.AdditionalData["UpdateRequestor"].ToString().Equals("remote", StringComparison.OrdinalIgnoreCase));
+
+                // MessageBox anzeigen, wenn passende Einträge gefunden werden
+                foreach (var matchingItem in matchingItems)
+                {
+                    var deviceName = matchingItem.Fields.AdditionalData.ContainsKey("DeviceName")
+                        ? matchingItem.Fields.AdditionalData["DeviceName"].ToString()
+                        : "Unknown Device";
+
+                    isRemoteUpdate = true;
+                    await BackupAndUpdateSignatures();
+
+                    //MessageBox.Show($"Update requested for remote device: {deviceName}", "Update Request Detected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    Trace.WriteLine($"Update request detected for device: {deviceName}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Error interacting with SharePoint list: {ex.Message}");
+            }
+        }
+
+        private async Task RegisterDeviceIfNotExists()
+        {
+            try
+            {
+                var graphClient = GetAuthenticatedGraphClient();
+                string listName = "Devices"; // Direkt den Listenname setzen
+                string deviceName = Environment.MachineName;
+
+                // Alle Listeneinträge abrufen
+                Trace.WriteLine("Fetching all items from SharePoint list...");
+                var listItems = await graphClient.Sites[siteId]
+                    .Lists[listName]
+                    .Items
+                    .Request()
+                    .Expand("fields") // Felder explizit anfordern
+                    .GetAsync();
+
+                // Liste aller verfügbaren Felder abrufen
+                Trace.WriteLine("Fetching SharePoint list fields...");
+                var listFields = await graphClient.Sites[siteId]
+                    .Lists[listName]
+                    .Columns
+                    .Request()
+                    .GetAsync();
+
+                // Internen Namen für 'AppPlattform', 'DeviceName' und 'AppVersion' validieren
+                string appPlattformFieldName = listFields.FirstOrDefault(f => f.DisplayName == "AppPlattform")?.Name ?? "AppPlattform";
+                string deviceNameFieldName = listFields.FirstOrDefault(f => f.DisplayName == "DeviceName")?.Name ?? "DeviceName";
+                string appVersionFieldName = listFields.FirstOrDefault(f => f.DisplayName == "AppVersion")?.Name ?? "AppVersion";
+
+                // Prüfen, ob der aktuelle PC bereits registriert ist
+                Trace.WriteLine("Filtering items locally...");
+                var existingItem = listItems.CurrentPage.FirstOrDefault(item =>
+                    item.Fields != null &&
+                    item.Fields.AdditionalData != null &&
+                    item.Fields.AdditionalData.ContainsKey(deviceNameFieldName) &&
+                    item.Fields.AdditionalData[deviceNameFieldName] != null &&
+                    item.Fields.AdditionalData[deviceNameFieldName].ToString().Equals(deviceName, StringComparison.OrdinalIgnoreCase));
+
+                if (existingItem != null)
+                {
+                    Trace.WriteLine($"Device '{deviceName}' is already registered in the SharePoint list.");
+                    return;
+                }
+
+                // Wenn der PC nicht gefunden wurde, neuen Eintrag erstellen
+                Trace.WriteLine($"Device '{deviceName}' not found in the SharePoint list. Creating a new entry...");
+
+                var newItem = new ListItem
+                {
+                    Fields = new FieldValueSet
+                    {
+                        AdditionalData = new Dictionary<string, object>
+                {
+                    { appPlattformFieldName, "Windows" },
+                    { deviceNameFieldName, deviceName },
+                    { appVersionFieldName, Assembly.GetExecutingAssembly().GetName().Version },
+                    { "Status", "registered" }, // Optional: Standard-Status
+                    { "LastUpdate", DateTime.Now.ToString("dd.MM.yyyy - HH:mm") },
+                    { "UpdateRequestor", "local" } // Optional
+                }
+                    }
+                };
+
+                await graphClient.Sites[siteId]
+                    .Lists[listName]
+                    .Items
+                    .Request()
+                    .AddAsync(newItem);
+
+                Trace.WriteLine($"Device '{deviceName}' has been successfully registered in the SharePoint list.");
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Error while registering device '{Environment.MachineName}': {ex.Message}");
+            }
+        }
+
+
+        private async Task<string> GetTargetFolder(GraphServiceClient graphClient, string currentDeviceName, int signatureChannelID)
+        {
+            try
+            {
+                string listName = "Devices"; // Name der SharePoint-Liste
+
+                // Alle Einträge aus der Liste abrufen
+                var listItems = await graphClient.Sites[siteId]
+                    .Lists[listName]
+                    .Items
+                    .Request()
+                    .Expand("fields")
+                    .GetAsync();
+
+                // Eintrag für das aktuelle Gerät suchen
+                var existingItem = listItems.CurrentPage.FirstOrDefault(item =>
+                    item.Fields != null &&
+                    item.Fields.AdditionalData != null &&
+                    item.Fields.AdditionalData.ContainsKey("DeviceName") &&
+                    item.Fields.AdditionalData["DeviceName"] != null &&
+                    item.Fields.AdditionalData["DeviceName"].ToString().Equals(currentDeviceName, StringComparison.OrdinalIgnoreCase));
+
+                if (existingItem != null)
+                {
+                    // Benutzer aus dem Eintrag abrufen
+                    if (existingItem.Fields.AdditionalData.ContainsKey("User"))
+                    {
+                        string assignedUser = existingItem.Fields.AdditionalData["User"].ToString();
+                        Trace.WriteLine($"User field found: {assignedUser}");
+
+                        // Benutzernamen zurückgeben
+                        return assignedUser;
+                    }
+                    else
+                    {
+                        Trace.WriteLine($"No 'User' field found for device '{currentDeviceName}'. Falling back to local setting.");
+                    }
+                }
+                else
+                {
+                    Trace.WriteLine($"Device '{currentDeviceName}' not found in SharePoint list. Falling back to local setting.");
+                }
+
+                // Lokale Einstellung basierend auf signatureChannelID
+                string localUser = signatureChannelID switch
+                {
+                    0 => "Marcel Bourquin",
+                    1 => "Debora Staub",
+                    _ => "Yannick Wiss"
+                };
+                Trace.WriteLine($"Using local setting based on signatureChannelID: {localUser}");
+                return localUser;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Error fetching target folder from SharePoint list: {ex.Message}");
+                // Lokale Einstellung im Fehlerfall
+                string fallbackUser = signatureChannelID switch
+                {
+                    0 => "Marcel Bourquin",
+                    1 => "Debora Staub",
+                    _ => "Yannick Wiss"
+                };
+                Trace.WriteLine($"Using fallback local setting: {fallbackUser}");
+                return fallbackUser;
+            }
         }
     }
 }
+

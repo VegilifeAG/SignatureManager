@@ -124,7 +124,7 @@
             label3.Name = "label3";
             label3.Size = new Size(518, 32);
             label3.TabIndex = 7;
-            label3.Text = "© 2024 Marc Büttner - Alle rechte vorbehalten.";
+            label3.Text = "© 2025 Marc Büttner - Alle rechte vorbehalten.";
             // 
             // label4
             // 

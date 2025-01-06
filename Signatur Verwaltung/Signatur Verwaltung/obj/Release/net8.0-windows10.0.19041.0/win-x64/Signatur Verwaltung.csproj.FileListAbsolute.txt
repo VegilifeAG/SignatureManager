@@ -227,3 +227,15 @@ C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\win-x64\ref\Signatur Verwaltung.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\win-x64\Signatur Verwaltung.genpublishdeps.cache
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\Newtonsoft.Json.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\EPPlus.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\EPPlus.Interfaces.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\EPPlus.System.Drawing.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Extensions.Configuration.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Extensions.Configuration.Json.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\System.Security.Cryptography.Pkcs.dll
