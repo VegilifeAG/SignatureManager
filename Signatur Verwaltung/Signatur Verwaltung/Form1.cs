@@ -36,6 +36,11 @@ namespace Signatur_Verwaltung
         private static readonly string FileName = "SignatureManagerSettings.json";
         private static readonly string FilePath = Path.Combine(TempPath, FileName);
 
+        private static DateTime? lastRemoteUpdate = null; // Zeitpunkt des letzten Remote-Updates
+        private List<DateTime> recentRemoteUpdates = new List<DateTime>();
+        private bool isThirtyMinuteBlockActive = false;
+        private DateTime thirtyMinuteBlockStartTime;
+
         private System.Windows.Forms.Timer listCheckTimer;
 
         public Form1()
@@ -125,13 +130,53 @@ namespace Signatur_Verwaltung
         {
             try
             {
-                // Startmeldung anzeigen
+                if (isRemoteUpdate)
+                {
+                    // Entferne Zeitstempel, die älter als 5 Minuten sind
+                    recentRemoteUpdates = recentRemoteUpdates.Where(ts => (DateTime.Now - ts).TotalMinutes <= 5).ToList();
+
+                    // Füge den aktuellen Zeitstempel hinzu
+                    recentRemoteUpdates.Add(DateTime.Now);
+
+                    // Überprüfen, ob 5 Updates in den letzten 5 Minuten aufgetreten sind
+                    if (recentRemoteUpdates.Count >= 5)
+                    {
+                        // Überprüfen, ob bereits eine 30-Minuten-Sperre aktiv ist
+                        if (isThirtyMinuteBlockActive)
+                        {
+                            // Wenn die 30-Minuten-Sperre aktiv ist und noch nicht abgelaufen, blockieren
+                            if ((DateTime.Now - thirtyMinuteBlockStartTime).TotalMinutes < 30)
+                            {
+                                Trace.WriteLine("Remote update blocked. 30-minute cooldown is active.");
+                                UpdateSharePointListItem("max-execution", "local");
+                                return;
+                            }
+                            else
+                            {
+                                // Wenn die 30-Minuten-Sperre abgelaufen ist, zurücksetzen
+                                isThirtyMinuteBlockActive = false;
+                                recentRemoteUpdates.Clear();
+                            }
+                        }
+                        else
+                        {
+                            // Aktiviere die 30-Minuten-Sperre
+                            isThirtyMinuteBlockActive = true;
+                            thirtyMinuteBlockStartTime = DateTime.Now;
+                            Trace.WriteLine("Remote update blocked. 30-minute cooldown started.");
+                            UpdateSharePointListItem("max-execution", "local");
+                            return;
+                        }
+                    }
+                }
+
+                // Aktualisierung der Zeit des letzten Remote-Updates, falls ein Remote-Update ausgeführt wird
                 if (isRemoteUpdate == true) {
                     indeterminateToastNotification("Initialisieren... - Von Ihrer Organisation angefordert.", "");
+                    lastRemoteUpdate = DateTime.Now;
                 } else {
                     indeterminateToastNotification("Initialisieren...", "");
                 }
-
                 var graphClient = GetAuthenticatedGraphClient();
                 var userDownloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microsoft", "Signatures");
                 var backupFolder = Path.Combine(System.IO.Path.GetTempPath(), "SignatureManager", "Backup");
