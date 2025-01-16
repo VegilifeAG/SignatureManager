@@ -13,12 +13,12 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("MIBUE.NET Ltd.")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
-[assembly: System.Reflection.AssemblyCopyrightAttribute("©2024 MIBUE.NET Ltd & Marc Büttner")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("4.1.8")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d59bc22b92afc32a7e2410629679639fc7e017b4")]
+[assembly: System.Reflection.AssemblyCopyrightAttribute("©2025 MIBUE.NET Ltd & Marc Büttner")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("4.3.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f72d6859ad69e221d4fa8d4e6564a0babe7d1d6")]
 [assembly: System.Reflection.AssemblyProductAttribute("Signatur Verwaltung")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Signatur Verwaltung")]
-[assembly: System.Reflection.AssemblyVersionAttribute("4.1.8")]
+[assembly: System.Reflection.AssemblyVersionAttribute("4.3.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows10.0.19041.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows10.0.19041.0")]
 

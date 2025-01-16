@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "4k2TU5c716s=",
+  "dgSpecHash": "ofo1bpkEufY=",
   "success": true,
   "projectFilePath": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Signatur Verwaltung.csproj",
   "expectedPackageFiles": [
@@ -162,7 +162,7 @@
     "C:\\Users\\mkj-mb\\.nuget\\packages\\system.windows.extensions\\8.0.0\\system.windows.extensions.8.0.0.nupkg.sha512",
     "C:\\Users\\mkj-mb\\.nuget\\packages\\wangkanai.graph\\0.13.0\\wangkanai.graph.0.13.0.nupkg.sha512",
     "C:\\Users\\mkj-mb\\.nuget\\packages\\wangkanai.system\\1.19.0\\wangkanai.system.1.19.0.nupkg.sha512",
-    "C:\\Users\\mkj-mb\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.54\\microsoft.windows.sdk.net.ref.10.0.19041.54.nupkg.sha512"
+    "C:\\Users\\mkj-mb\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.57\\microsoft.windows.sdk.net.ref.10.0.19041.57.nupkg.sha512"
   ],
   "logs": []
 }

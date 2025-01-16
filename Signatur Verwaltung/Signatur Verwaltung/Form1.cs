@@ -75,18 +75,23 @@ namespace Signatur_Verwaltung
             signatureChannelID = Properties.Settings.Default.SignatureChannelID;
         }
 
+        private static readonly SemaphoreSlim listCheckSemaphore = new SemaphoreSlim(1, 1);
+
         private async void ListCheckTimer_Tick(object sender, EventArgs e)
         {
+            if (!await listCheckSemaphore.WaitAsync(0))
+            {
+                Trace.WriteLine("ListCheckTimer_Tick is already running.");
+                return;
+            }
+
             try
             {
-                var graphClient = GetAuthenticatedGraphClient();
-                var site = await graphClient.Sites.GetByPath("sites/IT9", "vegilifeag966.sharepoint.com").Request().GetAsync();
-                var siteId = site.Id;
-                await CheckSharePointListForUpdates();
+                await CheckSharePointListForUpdates(); // Prüft nur auf Remote-Anweisungen
             }
-            catch (Exception ex)
+            finally
             {
-                Trace.WriteLine($"Error during periodic list check: {ex.Message}");
+                listCheckSemaphore.Release();
             }
         }
 
@@ -750,26 +755,28 @@ namespace Signatur_Verwaltung
                 var matchingItems = listItems.CurrentPage.Where(item =>
                     item.Fields != null &&
                     item.Fields.AdditionalData != null &&
-                    item.Fields.AdditionalData.ContainsKey("Status") &&
-                    item.Fields.AdditionalData["Status"] != null &&
-                    item.Fields.AdditionalData["Status"].ToString().Equals("requested", StringComparison.OrdinalIgnoreCase) &&
-                    item.Fields.AdditionalData.ContainsKey("UpdateRequestor") &&
-                    item.Fields.AdditionalData["UpdateRequestor"] != null &&
-                    item.Fields.AdditionalData["UpdateRequestor"].ToString().Equals("remote", StringComparison.OrdinalIgnoreCase));
+                    item.Fields.AdditionalData.TryGetValue("Status", out var status) &&
+                    status != null &&
+                    status.ToString().Equals("requested", StringComparison.OrdinalIgnoreCase) &&
+                    item.Fields.AdditionalData.TryGetValue("UpdateRequestor", out var requestor) &&
+                    requestor != null &&
+                    requestor.ToString().Equals("remote", StringComparison.OrdinalIgnoreCase));
 
-                // MessageBox anzeigen, wenn passende Einträge gefunden werden
-                foreach (var matchingItem in matchingItems)
+                if (matchingItems.Any())
                 {
-                    var deviceName = matchingItem.Fields.AdditionalData.ContainsKey("DeviceName")
-                        ? matchingItem.Fields.AdditionalData["DeviceName"].ToString()
-                        : "Unknown Device";
+                    foreach (var matchingItem in matchingItems)
+                    {
+                        var deviceName = matchingItem.Fields.AdditionalData.ContainsKey("DeviceName")
+                            ? matchingItem.Fields.AdditionalData["DeviceName"].ToString()
+                            : "Unknown Device";
 
-                    isRemoteUpdate = true;
-                    await BackupAndUpdateSignatures();
+                        Trace.WriteLine($"Update request detected for device: {deviceName}");
 
-                    //MessageBox.Show($"Update requested for remote device: {deviceName}", "Update Request Detected", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    Trace.WriteLine($"Update request detected for device: {deviceName}");
+                        // Nur für Remote-Updates das Flag setzen und die Toast-Benachrichtigung anpassen
+                        isRemoteUpdate = true;
+                        await BackupAndUpdateSignatures();
+                        isRemoteUpdate = false; // Direkt nach dem Update zurücksetzen
+                    }
                 }
             }
             catch (Exception ex)
