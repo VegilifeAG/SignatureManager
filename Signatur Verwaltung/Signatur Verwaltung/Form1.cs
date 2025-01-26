@@ -51,7 +51,7 @@ namespace Signatur_Verwaltung
 
             // Timer initialisieren
             listCheckTimer = new System.Windows.Forms.Timer();
-            listCheckTimer.Interval = 60000; // 60 Sekunden
+            listCheckTimer.Interval = 900000; // 15 Minuten in Millisekunden
             listCheckTimer.Tick += ListCheckTimer_Tick;
             listCheckTimer.Start();
 
@@ -95,8 +95,28 @@ namespace Signatur_Verwaltung
             }
         }
 
+        private void ShowReleaseInfoOnce()
+        {
+            if (!Properties.Settings.Default.HasSeenReleaseInfo)
+            {
+                // Zeige die MessageBox mit einem Ausrufezeichen und Warnungston
+                MessageBox.Show(
+                    "Künftig wird die Signaturverwaltung nur noch als Hintergrundsoftware laufen.\n\nDer Update-Prozess wird nicht mehr als Benachrichtigung angezeigt, sondern läuft nur noch im Hintergrund.\n\nDen aktuellen Status können Sie über das TaskTray abfragen.\n\nFür weitere Informationen wenden Sie sich bitte an Ihren Systemadministrator.",
+                    "Sigantur Verwaltung - Update Information",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation
+                );
+
+                // Setze die Einstellung, damit die Nachricht nicht erneut angezeigt wird
+                Properties.Settings.Default.HasSeenReleaseInfo = true;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         private async void Initialize()
         {
+            ShowReleaseInfoOnce();
+
             if (!CheckInternetConnection())
             {
                 errorToastNotification("Signaturenaktualisierung fehlgeschlagen", "Bitte stellen Sie sicher, dass Sie bei der nächsten Anmeldung mit dem Internet verbunden sind.");
@@ -177,10 +197,18 @@ namespace Signatur_Verwaltung
 
                 // Aktualisierung der Zeit des letzten Remote-Updates, falls ein Remote-Update ausgeführt wird
                 if (isRemoteUpdate == true) {
-                    indeterminateToastNotification("Initialisieren... - Von Ihrer Organisation angefordert.", "");
-                    lastRemoteUpdate = DateTime.Now;
+                    notifyIcon1.Text = "Signature Manager: Vorbereiten... - Von Ihrer Organisation angefordert.";
+                    if (Properties.Settings.Default.ShowProcessNotification == true)
+                    {
+                        indeterminateToastNotification("Signature Manager: Vorbereiten... - Von Ihrer Organisation angefordert.", "");
+                        lastRemoteUpdate = DateTime.Now;
+                    }
                 } else {
-                    indeterminateToastNotification("Initialisieren...", "");
+                    notifyIcon1.Text = "Signature Manager: Vorbereiten...";
+                    if (Properties.Settings.Default.ShowProcessNotification == true)
+                    {
+                        indeterminateToastNotification("Vorbereiten...", "");
+                    }
                 }
                 var graphClient = GetAuthenticatedGraphClient();
                 var userDownloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microsoft", "Signatures");
@@ -235,12 +263,22 @@ namespace Signatur_Verwaltung
 
                     // Navigiere und lade den Inhalt des Ordners herunter
                     await NavigateAndDownload(graphClient, siteId, driveId, signaturesFolderId, userDownloadFolder);
-                    updateIndeterminateToastNotification("Abgeschlossen", "");
 
-                    if (isRemoteUpdate == true) {
-                        updateIndeterminateToastNotification("Abgeschlossen - Von Ihrer Organisation angefordert.", "");
+                    if (isRemoteUpdate == true)
+                    {
+                        var formattedDate = FormatDateTime(lastRemoteUpdate ?? DateTime.Now);
+                        notifyIcon1.Text = $"Signature Manager: Auf dem neusten Stand - Letzte Aktualisierung: {formattedDate}";
+                        if (Properties.Settings.Default.ShowProcessNotification == true) 
+                        { 
+                            updateIndeterminateToastNotification("Abgeschlossen - Von Ihrer Organisation angefordert.", "");
+                        }
                     } else {
-                        updateIndeterminateToastNotification("Abgeschlossen", "");
+                        var formattedDate = FormatDateTime(lastRemoteUpdate ?? DateTime.Now);
+                        notifyIcon1.Text = $"Signature Manager: Auf dem neusten Stand - Letzte Aktualisierung: {formattedDate}";
+                        if (Properties.Settings.Default.ShowProcessNotification == true)
+                        {
+                            updateIndeterminateToastNotification("Abgeschlossen", "");
+                        }
                     }
 
                     await Task.Delay(2000);
@@ -341,9 +379,17 @@ namespace Signatur_Verwaltung
                         !fileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
                     {
                         if (isRemoteUpdate == true) {
-                            updateIndeterminateToastNotification("Aktualisieren... - Von Ihrer Organisation angefordert.", displayFileName); // Update toast notification dynamically
+                            notifyIcon1.Text = "Signature Manager: Aktualisieren... - Von Ihrer Organisation angefordert.";
+                            if (Properties.Settings.Default.ShowProcessNotification == true)
+                            {
+                                updateIndeterminateToastNotification("Aktualisieren... - Von Ihrer Organisation angefordert.", displayFileName); // Update toast notification dynamically
+                            }
                         } else {
-                            updateIndeterminateToastNotification("Aktualisieren...", displayFileName); // Update toast notification dynamically
+                            notifyIcon1.Text = "Signature Manager: Aktualisieren...";
+                            if (Properties.Settings.Default.ShowProcessNotification == true)
+                            {
+                                updateIndeterminateToastNotification("Aktualisieren...", displayFileName); // Update toast notification dynamically
+                            }
                         }
                     }
 
@@ -929,6 +975,29 @@ namespace Signatur_Verwaltung
                 };
                 Trace.WriteLine($"Using fallback local setting: {fallbackUser}");
                 return fallbackUser;
+            }
+        }
+
+        private string FormatDateTime(DateTime lastUpdateTime)
+        {
+            var now = DateTime.Now;
+            var timeString = lastUpdateTime.ToString("HH:mm");
+
+            if (lastUpdateTime.Date == now.Date)
+            {
+                return timeString; // Gleicher Tag
+            }
+            else if (lastUpdateTime.Date == now.AddDays(-1).Date)
+            {
+                return $"Gestern um {timeString}"; // Gestern
+            }
+            else if (lastUpdateTime.Date == now.AddDays(-2).Date)
+            {
+                return $"Vorgestern um {timeString}"; // Vorgestern
+            }
+            else
+            {
+                return lastUpdateTime.ToString("dd.MM.yyyy 'um' HH:mm"); // Weiter zurück
             }
         }
     }

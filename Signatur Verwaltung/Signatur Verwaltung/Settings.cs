@@ -30,6 +30,7 @@ namespace Signatur_Verwaltung
             tenantIDBox.Text = Properties.Settings.Default.TenantID;
             clientSecretBox.Text = Properties.Settings.Default.ClientSecret;
             signatureChannelComboBox.SelectedIndex = Properties.Settings.Default.SignatureChannelID;
+            checkBox1.Checked = Properties.Settings.Default.ShowProcessNotification;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -38,6 +39,7 @@ namespace Signatur_Verwaltung
             Properties.Settings.Default.TenantID = tenantIDBox.Text;
             Properties.Settings.Default.ClientSecret = clientSecretBox.Text;
             Properties.Settings.Default.SignatureChannelID = signatureChannelComboBox.SelectedIndex;
+            Properties.Settings.Default.ShowProcessNotification = checkBox1.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -47,6 +49,7 @@ namespace Signatur_Verwaltung
             Properties.Settings.Default.TenantID = null;
             Properties.Settings.Default.ClientSecret = null;
             Properties.Settings.Default.SignatureChannelID = -1;
+            Properties.Settings.Default.ShowProcessNotification = false;
 
             clientIDBox.Text = Properties.Settings.Default.ClientID;
             tenantIDBox.Text = Properties.Settings.Default.TenantID;

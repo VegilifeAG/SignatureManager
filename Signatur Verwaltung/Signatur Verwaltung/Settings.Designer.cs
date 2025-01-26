@@ -42,6 +42,7 @@
             label7 = new Label();
             resetButton = new Button();
             checkConnectionButton = new Button();
+            checkBox1 = new CheckBox();
             SuspendLayout();
             // 
             // label1
@@ -101,12 +102,12 @@
             signatureChannelComboBox.Location = new Point(461, 88);
             signatureChannelComboBox.Margin = new Padding(4);
             signatureChannelComboBox.Name = "signatureChannelComboBox";
-            signatureChannelComboBox.Size = new Size(476, 40);
+            signatureChannelComboBox.Size = new Size(552, 40);
             signatureChannelComboBox.TabIndex = 5;
             // 
             // button1
             // 
-            button1.Location = new Point(793, 221);
+            button1.Location = new Point(867, 216);
             button1.Margin = new Padding(4);
             button1.Name = "button1";
             button1.Size = new Size(146, 44);
@@ -150,7 +151,7 @@
             // 
             label6.AutoSize = true;
             label6.ForeColor = SystemColors.AppWorkspace;
-            label6.Location = new Point(771, 417);
+            label6.Location = new Point(847, 417);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
             label6.Size = new Size(166, 32);
@@ -165,13 +166,12 @@
             label7.Location = new Point(461, 145);
             label7.Margin = new Padding(4, 0, 4, 0);
             label7.Name = "label7";
-            label7.Size = new Size(478, 30);
+            label7.Size = new Size(0, 30);
             label7.TabIndex = 11;
-            label7.Text = "Powered by Microsoft 365 Graph and SharePoint";
             // 
             // resetButton
             // 
-            resetButton.Location = new Point(621, 221);
+            resetButton.Location = new Point(695, 216);
             resetButton.Margin = new Padding(4);
             resetButton.Name = "resetButton";
             resetButton.Size = new Size(164, 44);
@@ -191,11 +191,24 @@
             checkConnectionButton.UseVisualStyleBackColor = true;
             checkConnectionButton.Click += checkConnectionButton_Click;
             // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Checked = true;
+            checkBox1.CheckState = CheckState.Checked;
+            checkBox1.Location = new Point(461, 154);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(552, 36);
+            checkBox1.TabIndex = 14;
+            checkBox1.Text = "Detaillierte Update-Benachrichtigung anzeigen.";
+            checkBox1.UseVisualStyleBackColor = true;
+            // 
             // Settings
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(958, 468);
+            ClientSize = new Size(1033, 468);
+            Controls.Add(checkBox1);
             Controls.Add(checkConnectionButton);
             Controls.Add(resetButton);
             Controls.Add(label7);
@@ -237,5 +250,6 @@
         private Label label7;
         private Button resetButton;
         private Button checkConnectionButton;
+        private CheckBox checkBox1;
     }
 }
