@@ -61,8 +61,8 @@ namespace Signatur_Verwaltung
         private async void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             await UpdateSharePointListItem(
-                status: "offline",              
-                updateRequestor: "local"         
+                status: "offline",
+                updateRequestor: "local"
             );
         }
 
@@ -196,14 +196,17 @@ namespace Signatur_Verwaltung
                 }
 
                 // Aktualisierung der Zeit des letzten Remote-Updates, falls ein Remote-Update ausgeführt wird
-                if (isRemoteUpdate == true) {
+                if (isRemoteUpdate == true)
+                {
                     notifyIcon1.Text = "Signature Manager: Vorbereiten... - Von Ihrer Organisation angefordert.";
                     if (Properties.Settings.Default.ShowProcessNotification == true)
                     {
                         indeterminateToastNotification("Signature Manager: Vorbereiten... - Von Ihrer Organisation angefordert.", "");
                         lastRemoteUpdate = DateTime.Now;
                     }
-                } else {
+                }
+                else
+                {
                     notifyIcon1.Text = "Signature Manager: Vorbereiten...";
                     if (Properties.Settings.Default.ShowProcessNotification == true)
                     {
@@ -268,11 +271,13 @@ namespace Signatur_Verwaltung
                     {
                         var formattedDate = FormatDateTime(lastRemoteUpdate ?? DateTime.Now);
                         notifyIcon1.Text = $"Signature Manager: Auf dem neusten Stand - Letzte Aktualisierung: {formattedDate}";
-                        if (Properties.Settings.Default.ShowProcessNotification == true) 
-                        { 
+                        if (Properties.Settings.Default.ShowProcessNotification == true)
+                        {
                             updateIndeterminateToastNotification("Abgeschlossen - Von Ihrer Organisation angefordert.", "");
                         }
-                    } else {
+                    }
+                    else
+                    {
                         var formattedDate = FormatDateTime(lastRemoteUpdate ?? DateTime.Now);
                         notifyIcon1.Text = $"Signature Manager: Auf dem neusten Stand - Letzte Aktualisierung: {formattedDate}";
                         if (Properties.Settings.Default.ShowProcessNotification == true)
@@ -378,13 +383,16 @@ namespace Signatur_Verwaltung
                         !fileName.EndsWith(".gif", StringComparison.OrdinalIgnoreCase) &&
                         !fileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (isRemoteUpdate == true) {
+                        if (isRemoteUpdate == true)
+                        {
                             notifyIcon1.Text = "Signature Manager: Aktualisieren... - Von Ihrer Organisation angefordert.";
                             if (Properties.Settings.Default.ShowProcessNotification == true)
                             {
                                 updateIndeterminateToastNotification("Aktualisieren... - Von Ihrer Organisation angefordert.", displayFileName); // Update toast notification dynamically
                             }
-                        } else {
+                        }
+                        else
+                        {
                             notifyIcon1.Text = "Signature Manager: Aktualisieren...";
                             if (Properties.Settings.Default.ShowProcessNotification == true)
                             {
