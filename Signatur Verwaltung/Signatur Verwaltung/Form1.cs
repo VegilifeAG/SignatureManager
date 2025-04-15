@@ -139,7 +139,7 @@ namespace Signatur_Verwaltung
             {
                 using (var ping = new Ping())
                 {
-                    var reply = ping.Send("microsoft.com");
+                    var reply = ping.Send("graph.microsoft.com");
                     return reply.Status == IPStatus.Success;
                 }
             }

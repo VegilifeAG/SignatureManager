@@ -11,7 +11,7 @@
         "dependencies": {
           "EPPlus": "7.5.2",
           "Microsoft.Identity.Client": "4.61.3",
-          "Microsoft.NET.ILLink.Tasks": "8.0.12",
+          "Microsoft.NET.ILLink.Tasks": "8.0.15",
           "Microsoft.Toolkit.Uwp.Notifications": "7.1.3",
           "Microsoft.Windows.Compatibility": "8.0.7",
           "Newtonsoft.Json": "13.0.3",
@@ -464,7 +464,7 @@
           }
         }
       },
-      "Microsoft.NET.ILLink.Tasks/8.0.12": {},
+      "Microsoft.NET.ILLink.Tasks/8.0.15": {},
       "Microsoft.NETCore.Platforms/3.1.0": {},
       "Microsoft.NETCore.Targets/1.1.0": {},
       "Microsoft.Toolkit.Uwp.Notifications/7.1.3": {
@@ -1816,12 +1816,12 @@
       "path": "microsoft.jsinterop/7.0.0",
       "hashPath": "microsoft.jsinterop.7.0.0.nupkg.sha512"
     },
-    "Microsoft.NET.ILLink.Tasks/8.0.12": {
+    "Microsoft.NET.ILLink.Tasks/8.0.15": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FV4HnQ3JI15PHnJ5PGTbz+rYvrih42oLi/7UMIshNwCwUZhTq13UzrggtXk4ygrcMcN+4jsS6hhshx2p/Zd0ig==",
-      "path": "microsoft.net.illink.tasks/8.0.12",
-      "hashPath": "microsoft.net.illink.tasks.8.0.12.nupkg.sha512"
+      "sha512": "sha512-s4eXlcRGyHeCgFUGQnhq0e/SCHBPp0jOHgMqZg3fQ2OCHJSm1aOUhI6RFWuVIcEb9ig2WgI2kWukk8wu72EbUQ==",
+      "path": "microsoft.net.illink.tasks/8.0.15",
+      "hashPath": "microsoft.net.illink.tasks.8.0.15.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/3.1.0": {
       "type": "package",
