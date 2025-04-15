@@ -13,8 +13,8 @@
     <Company>MIBUE.NET Ltd.</Company>
     <Copyright>©2025 MIBUE.NET Ltd &amp; Marc Büttner</Copyright>
     <PackageIcon>530543c0-644d-4369-9314-97c5eb197d37-cover.png</PackageIcon>
-    <AssemblyVersion>4.4.2</AssemblyVersion>
-    <FileVersion>4.4.2</FileVersion>
+    <AssemblyVersion>4.4.3</AssemblyVersion>
+    <FileVersion>4.4.3</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

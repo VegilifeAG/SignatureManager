@@ -115,7 +115,7 @@ namespace Signatur_Verwaltung
 
         private async void Initialize()
         {
-            ShowReleaseInfoOnce();
+            //ShowReleaseInfoOnce();
 
             if (!CheckInternetConnection())
             {
