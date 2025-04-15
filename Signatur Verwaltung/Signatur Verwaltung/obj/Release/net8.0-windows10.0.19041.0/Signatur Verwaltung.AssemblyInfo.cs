@@ -14,13 +14,8 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MIBUE.NET Ltd.")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("©2025 MIBUE.NET Ltd & Marc Büttner")]
-<<<<<<< Updated upstream
 [assembly: System.Reflection.AssemblyFileVersionAttribute("4.4.2")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b7abba7d9510ef559bd7459720ff87bebf427c71")]
-=======
-[assembly: System.Reflection.AssemblyFileVersionAttribute("4.4.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cbba72a58f914987fbd860e9d2475da7d7d9e791")]
->>>>>>> Stashed changes
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+17e8280b2f2a2d6c4c3af4865f42045ea9b30f47")]
 [assembly: System.Reflection.AssemblyProductAttribute("Signatur Verwaltung")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Signatur Verwaltung")]
 [assembly: System.Reflection.AssemblyVersionAttribute("4.4.2")]
