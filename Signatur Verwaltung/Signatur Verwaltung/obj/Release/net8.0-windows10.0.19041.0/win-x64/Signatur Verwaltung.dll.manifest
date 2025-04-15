@@ -78,7 +78,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>iRPeLEhS0lMl2+kjll0osia7pInhoob+0i+ykKZS1Gg=</dsig:DigestValue>
+      <dsig:DigestValue>CmbOYS1JZbZfXXNP/4i8wX5KpIFvZHCFtc/dTrNW3Tg=</dsig:DigestValue>
     </hash>
   </file>
   <file name="sni.dll" size="160040">
