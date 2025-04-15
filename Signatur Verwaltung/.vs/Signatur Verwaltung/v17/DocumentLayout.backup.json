@@ -70,7 +70,8 @@
               "RelativeToolTip": "Signatur Verwaltung\\Form1.cs",
               "ViewState": "AgIAAGoAAAAA7P////8FwHoAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-15T21:50:09.849Z"
+              "WhenOpened": "2025-04-15T21:50:09.849Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -81,7 +82,8 @@
               "ToolTip": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Settings.cs [Entwurf]",
               "RelativeToolTip": "Signatur Verwaltung\\Settings.cs [Entwurf]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-15T21:49:17.147Z"
+              "WhenOpened": "2025-04-15T21:49:17.147Z",
+              "EditorCaption": " [Entwurf]"
             }
           ]
         }
