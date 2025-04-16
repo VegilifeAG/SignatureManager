@@ -30,8 +30,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs",
+              "RelativeDocumentMoniker": "Signatur Verwaltung\\Form1.cs",
+              "ToolTip": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs",
+              "RelativeToolTip": "Signatur Verwaltung\\Form1.cs",
+              "ViewState": "AgIAAHMAAABAlwAAAMA0wJQAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-14T09:15:36.925Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Signatur Verwaltung",
+              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Signatur Verwaltung.csproj",
+              "RelativeDocumentMoniker": "Signatur Verwaltung\\Signatur Verwaltung.csproj",
+              "ToolTip": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Signatur Verwaltung.csproj",
+              "RelativeToolTip": "Signatur Verwaltung\\Signatur Verwaltung.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-08-07T15:19:18.203Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
@@ -56,21 +85,7 @@
               "ToolTip": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Settings.cs [Entwurf]",
               "RelativeToolTip": "Signatur Verwaltung\\Settings.cs [Entwurf]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T13:01:00.176Z",
-              "EditorCaption": " [Entwurf]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Form1.cs",
-              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs",
-              "RelativeDocumentMoniker": "Signatur Verwaltung\\Form1.cs",
-              "ToolTip": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs",
-              "RelativeToolTip": "Signatur Verwaltung\\Form1.cs",
-              "ViewState": "AgIAAHMAAABAlwAAAMA0wJQAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T09:15:36.925Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-14T13:01:00.176Z"
             },
             {
               "$type": "Document",
@@ -82,18 +97,6 @@
               "RelativeToolTip": "Signatur Verwaltung\\Form1.cs [Entwurf]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-14T09:15:25.019Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Signatur Verwaltung",
-              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Signatur Verwaltung.csproj",
-              "RelativeDocumentMoniker": "Signatur Verwaltung\\Signatur Verwaltung.csproj",
-              "ToolTip": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Signatur Verwaltung.csproj",
-              "RelativeToolTip": "Signatur Verwaltung\\Signatur Verwaltung.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-08-07T15:19:18.203Z",
-              "EditorCaption": ""
             }
           ]
         }
