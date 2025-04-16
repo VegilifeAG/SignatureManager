@@ -1,4 +1,0 @@
-C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\app.publish\Signatur Verwaltung.pdb
-C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\app.publish\Signatur Verwaltung.dll.config
-C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\app.publish\sni.dll
-C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Release\net8.0-windows10.0.19041.0\win-x64\app.publish\Signatur Verwaltung.exe
