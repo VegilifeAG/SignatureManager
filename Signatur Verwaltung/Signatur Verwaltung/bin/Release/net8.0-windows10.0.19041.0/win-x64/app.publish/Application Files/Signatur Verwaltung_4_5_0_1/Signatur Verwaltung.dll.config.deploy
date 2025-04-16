@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <configSections>
+        <sectionGroup name="userSettings" type="System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" >
+            <section name="Signatur_Verwaltung.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" allowExeDefinition="MachineToLocalUser" requirePermission="false" />
+        </sectionGroup>
+    </configSections>
+    <userSettings>
+        <Signatur_Verwaltung.Properties.Settings>
+            <setting name="ClientID" serializeAs="String">
+                <value />
+            </setting>
+            <setting name="TenantID" serializeAs="String">
+                <value />
+            </setting>
+            <setting name="ClientSecret" serializeAs="String">
+                <value />
+            </setting>
+            <setting name="SignatureChannelID" serializeAs="String">
+                <value>0</value>
+            </setting>
+            <setting name="ShowProcessNotification" serializeAs="String">
+                <value>False</value>
+            </setting>
+            <setting name="HasSeenReleaseInfo" serializeAs="String">
+                <value>False</value>
+            </setting>
+        </Signatur_Verwaltung.Properties.Settings>
+    </userSettings>
+</configuration>
