@@ -14,10 +14,13 @@
     <Setting Name="SignatureChannelID" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="ShowProcessNotification" Type="System.Boolean" Scope="User">
+    <Setting Name="LicenseName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SetupCompleted" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="HasSeenReleaseInfo" Type="System.Boolean" Scope="User">
+    <Setting Name="ShowProcessNotification" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

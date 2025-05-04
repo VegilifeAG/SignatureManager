@@ -133,6 +133,7 @@ C:\Users\Marc Büttner\source\repos\SignatureManager\Signatur Verwaltung\Signatu
 C:\Users\Marc Büttner\source\repos\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows10.0.19041.0\Microsoft.Windows.SDK.NET.dll
 C:\Users\Marc Büttner\source\repos\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\bin\Debug\net8.0-windows10.0.19041.0\WinRT.Runtime.dll
 C:\Users\Marc Büttner\source\repos\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows10.0.19041.0\Signatur Verwaltung.csproj.AssemblyReference.cache
+C:\Users\Marc Büttner\source\repos\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows10.0.19041.0\Signatur_Verwaltung.CheckForUpdates.resources
 C:\Users\Marc Büttner\source\repos\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows10.0.19041.0\Signatur_Verwaltung.Error.resources
 C:\Users\Marc Büttner\source\repos\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows10.0.19041.0\Signatur_Verwaltung.Form1.resources
 C:\Users\Marc Büttner\source\repos\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Debug\net8.0-windows10.0.19041.0\Signatur_Verwaltung.Password.resources

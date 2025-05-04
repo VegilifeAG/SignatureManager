@@ -1,25 +1,29 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\",
+  "WorkspaceRootPath": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|c:\\mac\\home\\documents\\vegilife-development\\signaturemanager\\signatur verwaltung\\signatur verwaltung\\signatur verwaltung.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
-      "RelativeMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|solutionrelative:signatur verwaltung\\signatur verwaltung.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|c:\\mac\\home\\documents\\vegilife-development\\signaturemanager\\signatur verwaltung\\signatur verwaltung\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|c:\\users\\marc b\u00FCttner\\source\\repos\\signaturemanager\\signatur verwaltung\\signatur verwaltung\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|solutionrelative:signatur verwaltung\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\signatur verwaltung\\properties\\settings.settings||{6D2695F9-5365-4A78-89ED-F205C045BFE6}",
+      "AbsoluteMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\signatur verwaltung\\properties\\settings.settings||{6D2695F9-5365-4A78-89ED-F205C045BFE6}",
       "RelativeMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|solutionrelative:signatur verwaltung\\properties\\settings.settings||{6D2695F9-5365-4A78-89ED-F205C045BFE6}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\signatur verwaltung\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|c:\\users\\marc b\u00FCttner\\source\\repos\\signaturemanager\\signatur verwaltung\\signatur verwaltung\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|solutionrelative:signatur verwaltung\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\signatur verwaltung\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|solutionrelative:signatur verwaltung\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\signatur verwaltung\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|c:\\users\\marc b\u00FCttner\\source\\repos\\signaturemanager\\signatur verwaltung\\signatur verwaltung\\tempjsonsettingsmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|solutionrelative:signatur verwaltung\\tempjsonsettingsmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\signatur verwaltung\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{00D740D5-8F5C-493C-8DD8-2EB341FCAD11}|Signatur Verwaltung\\Signatur Verwaltung.csproj|solutionrelative:signatur verwaltung\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
@@ -30,36 +34,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Form1.cs",
-              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs",
-              "RelativeDocumentMoniker": "Signatur Verwaltung\\Form1.cs",
-              "ToolTip": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs",
-              "RelativeToolTip": "Signatur Verwaltung\\Form1.cs",
-              "ViewState": "AgIAAHMAAABAlwAAAMA0wJQAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T09:15:36.925Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Signatur Verwaltung",
-              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Signatur Verwaltung.csproj",
-              "RelativeDocumentMoniker": "Signatur Verwaltung\\Signatur Verwaltung.csproj",
-              "ToolTip": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Signatur Verwaltung.csproj",
-              "RelativeToolTip": "Signatur Verwaltung\\Signatur Verwaltung.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-08-07T15:19:18.203Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -67,37 +46,78 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Settings.settings",
-              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Properties\\Settings.settings",
-              "RelativeDocumentMoniker": "Signatur Verwaltung\\Properties\\Settings.settings",
-              "ToolTip": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Properties\\Settings.settings",
-              "RelativeToolTip": "Signatur Verwaltung\\Properties\\Settings.settings",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002767|",
-              "WhenOpened": "2025-01-06T05:02:54.254Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 3,
               "Title": "Settings.cs [Entwurf]",
-              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Settings.cs",
+              "DocumentMoniker": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Settings.cs",
               "RelativeDocumentMoniker": "Signatur Verwaltung\\Settings.cs",
-              "ToolTip": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Settings.cs [Entwurf]",
+              "ToolTip": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Settings.cs [Entwurf]",
               "RelativeToolTip": "Signatur Verwaltung\\Settings.cs [Entwurf]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T13:01:00.176Z",
+              "WhenOpened": "2025-04-22T21:22:29.853Z",
               "EditorCaption": " [Entwurf]"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Form1.cs [Entwurf]",
-              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs",
+              "Title": "TempJsonSettingsManager.cs",
+              "DocumentMoniker": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\TempJsonSettingsManager.cs",
+              "RelativeDocumentMoniker": "Signatur Verwaltung\\TempJsonSettingsManager.cs",
+              "ToolTip": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\TempJsonSettingsManager.cs",
+              "RelativeToolTip": "Signatur Verwaltung\\TempJsonSettingsManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-22T21:16:38.039Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Settings.cs",
+              "DocumentMoniker": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Settings.cs",
+              "RelativeDocumentMoniker": "Signatur Verwaltung\\Settings.cs",
+              "ToolTip": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Settings.cs",
+              "RelativeToolTip": "Signatur Verwaltung\\Settings.cs",
+              "ViewState": "AgIAABgAAADAYmZmZuYiwCEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-22T19:12:36.314Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs",
               "RelativeDocumentMoniker": "Signatur Verwaltung\\Form1.cs",
-              "ToolTip": "C:\\Mac\\Home\\Documents\\Vegilife-Development\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs [Entwurf]",
+              "ToolTip": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs",
+              "RelativeToolTip": "Signatur Verwaltung\\Form1.cs",
+              "ViewState": "AgIAAN4AAAAAcDYzMzP/v/YAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-14T09:15:36.925Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Settings.settings",
+              "DocumentMoniker": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Properties\\Settings.settings",
+              "RelativeDocumentMoniker": "Signatur Verwaltung\\Properties\\Settings.settings",
+              "ToolTip": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Properties\\Settings.settings",
+              "RelativeToolTip": "Signatur Verwaltung\\Properties\\Settings.settings",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002767|",
+              "WhenOpened": "2025-01-06T05:02:54.254Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Form1.cs [Entwurf]",
+              "DocumentMoniker": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs",
+              "RelativeDocumentMoniker": "Signatur Verwaltung\\Form1.cs",
+              "ToolTip": "C:\\Users\\Marc B\u00FCttner\\source\\repos\\SignatureManager\\Signatur Verwaltung\\Signatur Verwaltung\\Form1.cs [Entwurf]",
               "RelativeToolTip": "Signatur Verwaltung\\Form1.cs [Entwurf]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T09:15:25.019Z"
+              "WhenOpened": "2024-08-14T09:15:25.019Z",
+              "EditorCaption": " [Entwurf]"
             }
           ]
         }
