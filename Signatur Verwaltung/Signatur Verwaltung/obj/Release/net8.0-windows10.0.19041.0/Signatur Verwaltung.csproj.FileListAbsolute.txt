@@ -302,3 +302,4 @@ C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\Signatur Verwaltung.pdb
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\Signatur Verwaltung.genruntimeconfig.cache
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\ref\Signatur Verwaltung.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\Signatur_Verwaltung.CheckForUpdates.resources

@@ -254,3 +254,4 @@ C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\win-x64\refint\Signatur Verwaltung.dll
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\win-x64\Signatur Verwaltung.pdb
 C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\win-x64\ref\Signatur Verwaltung.dll
+C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\obj\Release\net8.0-windows10.0.19041.0\win-x64\Signatur_Verwaltung.CheckForUpdates.resources
