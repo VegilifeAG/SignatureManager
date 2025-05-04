@@ -1,10 +1,23 @@
-ï»¿using System.Diagnostics;
+using System.Diagnostics;
 using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Runtime.ConstrainedExecution;
+using System.Text.RegularExpressions;
 using Microsoft.Graph;
 using Microsoft.Identity.Client;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Notifications;
+using System.Configuration;
+using System.Xml;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.ComponentModel;
+using System.IO;
+using Microsoft.Graph;
+using OfficeOpenXml;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Signatur_Verwaltung
 {
@@ -20,10 +33,10 @@ namespace Signatur_Verwaltung
         private System.Windows.Forms.Timer shutdownTimer;
         private bool wasOutlookRunning = false;
         private static readonly string TempPath = Path.Combine(Path.GetTempPath(), "SignatureManager");
-        private static readonly string FileName = "settings.json";
+        private static readonly string FileName = "SignatureManagerSettings.json";
         private static readonly string FilePath = Path.Combine(TempPath, FileName);
 
-        private static DateTime? lastRemoteUpdate = null;
+        private static DateTime? lastRemoteUpdate = null; // Zeitpunkt des letzten Remote-Updates
         private List<DateTime> recentRemoteUpdates = new List<DateTime>();
         private bool isThirtyMinuteBlockActive = false;
         private DateTime thirtyMinuteBlockStartTime;
@@ -38,19 +51,11 @@ namespace Signatur_Verwaltung
 
             // Timer initialisieren
             listCheckTimer = new System.Windows.Forms.Timer();
-            listCheckTimer.Interval = 900000; // 15 Minuten 
+            listCheckTimer.Interval = 900000; // 15 Minuten in Millisekunden
             listCheckTimer.Tick += ListCheckTimer_Tick;
             listCheckTimer.Start();
 
             this.FormClosing += Form1_FormClosing;
-        }
-
-        private class LicenseResponse
-        {
-            public string clientId { get; set; }
-            public string tenantId { get; set; }
-            public string clientSecret { get; set; }
-            public string licensedOrganisationName { get; set; }
         }
 
         private async void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -63,6 +68,7 @@ namespace Signatur_Verwaltung
 
         private void LoadSettings()
         {
+            // Einstellungen in private Felder laden
             clientId = Properties.Settings.Default.ClientID;
             tenantId = Properties.Settings.Default.TenantID;
             clientSecret = Properties.Settings.Default.ClientSecret;
@@ -81,7 +87,7 @@ namespace Signatur_Verwaltung
 
             try
             {
-                await CheckSharePointListForUpdates(); // PrÃ¼ft nur auf Remote-Anweisungen
+                await CheckSharePointListForUpdates(); // Prüft nur auf Remote-Anweisungen
             }
             finally
             {
@@ -89,182 +95,59 @@ namespace Signatur_Verwaltung
             }
         }
 
-        private async Task<bool> CheckInternetConnection()
+        private void ShowReleaseInfoOnce()
         {
-            clientId = Properties.Settings.Default.ClientID;
-            tenantId = Properties.Settings.Default.TenantID;
-            clientSecret = Properties.Settings.Default.ClientSecret;
-            signatureChannelID = Properties.Settings.Default.SignatureChannelID;
-
-            if (string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(tenantId) || string.IsNullOrWhiteSpace(clientSecret))
+            if (!Properties.Settings.Default.HasSeenReleaseInfo)
             {
-                var jsonSettings = new TempJsonSettingsManager();
+                // Zeige die MessageBox mit einem Ausrufezeichen und Warnungston
+                MessageBox.Show(
+                    "Künftig wird die Signaturverwaltung nur noch als Hintergrundsoftware laufen.\n\nDer Update-Prozess wird nicht mehr als Benachrichtigung angezeigt, sondern läuft nur noch im Hintergrund.\n\nDen aktuellen Status können Sie über das TaskTray abfragen.\n\nFür weitere Informationen wenden Sie sich bitte an Ihren Systemadministrator.",
+                    "Sigantur Verwaltung - Update Information",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation
+                );
 
-                if (!string.IsNullOrWhiteSpace(jsonSettings.ClientID) &&
-                    !string.IsNullOrWhiteSpace(jsonSettings.TenantID) &&
-                    !string.IsNullOrWhiteSpace(jsonSettings.ClientSecret) &&
-                    jsonSettings.SignatureChannelID >= 0)
-                {
-                    clientId = jsonSettings.ClientID;
-                    tenantId = jsonSettings.TenantID;
-                    clientSecret = jsonSettings.ClientSecret;
-                    signatureChannelID = jsonSettings.SignatureChannelID;
-
-                    if (await CanConnectToMicrosoft365(clientId, tenantId, clientSecret))
-                    {
-                        return true;
-                    }
-
-                    
-                    Properties.Settings.Default.Save();
-                    return false;
-                }
-
-                indeterminateToastNotification("Verbinden...", "", "Remote-Einrichtung");
-                Task.Delay(4000).Wait();
-
-                try
-                {
-                    using (HttpClient client = new HttpClient())
-                    {
-                        string url = "https://sm2license.vegilife.ch/?apiKey=LSDKJFGHSDLKJFGHLDSKFJGH09438UT2OREWHGJ";
-                        string json = client.GetStringAsync(url).GetAwaiter().GetResult();
-                        var remoteData = System.Text.Json.JsonSerializer.Deserialize<LicenseResponse>(json);
-
-                        if (remoteData != null &&
-                            !string.IsNullOrWhiteSpace(remoteData.clientId) &&
-                            !string.IsNullOrWhiteSpace(remoteData.tenantId) &&
-                            !string.IsNullOrWhiteSpace(remoteData.clientSecret))
-                        {
-                            updateIndeterminateToastNotification("Lizensieren...", "");
-                            Task.Delay(1000).Wait();
-
-                            updateIndeterminateToastNotification("Einstellungen installieren...", "");
-                            Properties.Settings.Default.ClientID = remoteData.clientId;
-                            Properties.Settings.Default.TenantID = remoteData.tenantId;
-                            Properties.Settings.Default.ClientSecret = remoteData.clientSecret;
-                            Properties.Settings.Default.LicenseName = remoteData.licensedOrganisationName;
-
-                            Properties.Settings.Default.SetupCompleted = true;
-
-                            Properties.Settings.Default.Save();
-                            Task.Delay(3000).Wait();
-
-                            updateIndeterminateToastNotification("ÃœberprÃ¼fen...", "");
-                            Task.Delay(2000).Wait();
-                            ToastNotificationManagerCompat.History.Remove("ProcessToast", "SignatureUpdateProcess");
-
-                            clientId = remoteData.clientId;
-                            tenantId = remoteData.tenantId;
-                            clientSecret = remoteData.clientSecret;
-
-                            if (await CanConnectToMicrosoft365(clientId, tenantId, clientSecret))
-                            {
-                                Properties.Settings.Default.ShowProcessNotification = true;
-                                return true;
-                            }
-
-                            errorToastNotification("Verbindung zu Microsoft 365 fehlgeschlagen", "Bitte Ã¼berprÃ¼fen Sie die Lizenzdaten.");
-                            Properties.Settings.Default.SetupCompleted = false;
-                            Properties.Settings.Default.Save();
-                            return false;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    updateIndeterminateToastNotification("Fehlgeschlagen", "");
-                    MessageBox.Show("Fehler bei der Remote-Einrichtung: " + ex.Message, "Fehler - Signatur Verwaltung", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Properties.Settings.Default.SetupCompleted = false;
-                    Properties.Settings.Default.Save();
-                    return false;
-                }
-
-                return false;
-            }
-
-            if (!await CanConnectToMicrosoft365(clientId, tenantId, clientSecret))
-            {
-                errorToastNotification("Verbindung zu Microsoft 365 fehlgeschlagen", "Bitte Ã¼berprÃ¼fen Sie die Lizenzdaten.");
-                Properties.Settings.Default.SetupCompleted = false;
+                // Setze die Einstellung, damit die Nachricht nicht erneut angezeigt wird
+                Properties.Settings.Default.HasSeenReleaseInfo = true;
                 Properties.Settings.Default.Save();
-                return false;
             }
-
-            Properties.Settings.Default.SetupCompleted = true;
-            Properties.Settings.Default.Save();
-            return true;
         }
-
-
-
-
-
 
         private async void Initialize()
         {
-            Properties.Settings.Default.ShowProcessNotification = false; //IMPORTANT FOR #SMI838 - UPDATE LOOP BUG
+            //ShowReleaseInfoOnce();
 
-            if (!await CheckInternetConnection())
+            if (!CheckInternetConnection())
             {
-                //errorToastNotification("Signaturenaktualisierung fehlgeschlagen", "Bitte stellen Sie sicher, dass Sie bei der nÃ¤chsten Anmeldung mit dem Internet verbunden sind.");
+                errorToastNotification("Signaturenaktualisierung fehlgeschlagen", "Bitte stellen Sie sicher, dass Sie bei der nächsten Anmeldung mit dem Internet verbunden sind.");
                 return;
             }
+
+            ImportSettingsFromTempFile();
+
             var graphClient = GetAuthenticatedGraphClient();
             var site = await graphClient.Sites.GetByPath("sites/IT9", "vegilifeag966.sharepoint.com").Request().GetAsync();
             siteId = site.Id;
 
             await RegisterDeviceIfNotExists();
-            UpdateSharePointListItem("idle", "local");
-
-            var listItems = await graphClient.Sites[siteId]
-                .Lists["Devices"]
-                .Items
-                .Request()
-                .Expand("fields")
-                .GetAsync();
-
-            var currentDeviceName = Environment.MachineName;
-
-            var matchingItem = listItems.CurrentPage.FirstOrDefault(item =>
-                item.Fields != null &&
-                item.Fields.AdditionalData != null &&
-                item.Fields.AdditionalData.ContainsKey("DeviceName") &&
-                item.Fields.AdditionalData["DeviceName"]?.ToString().Equals(currentDeviceName, StringComparison.OrdinalIgnoreCase) == true &&
-                item.Fields.AdditionalData.TryGetValue("Status", out var statusObj) &&
-                statusObj?.ToString().Equals("reset", StringComparison.OrdinalIgnoreCase) == true
-            );
-
-            if (matchingItem != null)
-            {
-                Properties.Settings.Default.ClientID = "";
-                Properties.Settings.Default.ClientSecret = "";
-                Properties.Settings.Default.TenantID = "";
-                Properties.Settings.Default.SignatureChannelID = -1;
-                Properties.Settings.Default.Save();
-
-                try
-                {
-                    if (System.IO.File.Exists(FilePath))
-                    {
-                        System.IO.File.Delete(FilePath);
-                        Trace.WriteLine($"Settings-Datei '{FilePath}' wurde gelÃ¶scht (wegen Reset).");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine($"Fehler beim LÃ¶schen der Settings-Datei '{FilePath}': {ex.Message}");
-                }
-
-                UpdateSharePointListItem("idle", "local");
-
-                await Task.Delay(2000);
-                Initialize(); 
-                return;
-            }
             await BackupAndUpdateSignatures();
         }
 
+        private bool CheckInternetConnection()
+        {
+            try
+            {
+                using (var ping = new Ping())
+                {
+                    var reply = ping.Send("graph.microsoft.com");
+                    return reply.Status == IPStatus.Success;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
 
 
@@ -274,16 +157,16 @@ namespace Signatur_Verwaltung
             {
                 if (isRemoteUpdate)
                 {
-                    // Entferne Zeitstempel, die Ã¤lter als 5 Minuten sind
+                    // Entferne Zeitstempel, die älter als 5 Minuten sind
                     recentRemoteUpdates = recentRemoteUpdates.Where(ts => (DateTime.Now - ts).TotalMinutes <= 5).ToList();
 
-                    // FÃ¼ge den aktuellen Zeitstempel hinzu
+                    // Füge den aktuellen Zeitstempel hinzu
                     recentRemoteUpdates.Add(DateTime.Now);
 
-                    // ÃœberprÃ¼fen, ob 5 Updates in den letzten 5 Minuten aufgetreten sind
+                    // Überprüfen, ob 5 Updates in den letzten 5 Minuten aufgetreten sind
                     if (recentRemoteUpdates.Count >= 5)
                     {
-                        // ÃœberprÃ¼fen, ob bereits eine 30-Minuten-Sperre aktiv ist
+                        // Überprüfen, ob bereits eine 30-Minuten-Sperre aktiv ist
                         if (isThirtyMinuteBlockActive)
                         {
                             // Wenn die 30-Minuten-Sperre aktiv ist und noch nicht abgelaufen, blockieren
@@ -295,7 +178,7 @@ namespace Signatur_Verwaltung
                             }
                             else
                             {
-                                // Wenn die 30-Minuten-Sperre abgelaufen ist, zurÃ¼cksetzen
+                                // Wenn die 30-Minuten-Sperre abgelaufen ist, zurücksetzen
                                 isThirtyMinuteBlockActive = false;
                                 recentRemoteUpdates.Clear();
                             }
@@ -312,29 +195,29 @@ namespace Signatur_Verwaltung
                     }
                 }
 
-                // Aktualisierung der Zeit des letzten Remote-Updates, falls ein Remote-Update ausgefÃ¼hrt wird
+                // Aktualisierung der Zeit des letzten Remote-Updates, falls ein Remote-Update ausgeführt wird
                 if (isRemoteUpdate == true)
                 {
-                    notifyIcon1.Text = "Signature Manager: Aktualisieren... - Von Ihrer Organisation angefordert.";
+                    notifyIcon1.Text = "Signature Manager: Vorbereiten... - Von Ihrer Organisation angefordert.";
                     if (Properties.Settings.Default.ShowProcessNotification == true)
                     {
-                        indeterminateToastNotification("Signature Manager: Vorbereiten... - Von Ihrer Organisation angefordert.", "", "Signaturen werden aktualisiert...");
+                        indeterminateToastNotification("Signature Manager: Vorbereiten... - Von Ihrer Organisation angefordert.", "");
                         lastRemoteUpdate = DateTime.Now;
                     }
                 }
                 else
                 {
-                    notifyIcon1.Text = "Signature Manager: Aktualisieren...";
+                    notifyIcon1.Text = "Signature Manager: Vorbereiten...";
                     if (Properties.Settings.Default.ShowProcessNotification == true)
                     {
-                        indeterminateToastNotification("Vorbereiten...", "", "Signaturen werden aktualisiert...");
+                        indeterminateToastNotification("Vorbereiten...", "");
                     }
                 }
                 var graphClient = GetAuthenticatedGraphClient();
                 var userDownloadFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Microsoft", "Signatures");
                 var backupFolder = Path.Combine(System.IO.Path.GetTempPath(), "SignatureManager", "Backup");
 
-                // ÃœberprÃ¼fen, ob das temporÃ¤re Verzeichnis existiert, und bei Bedarf erstellen
+                // Überprüfen, ob das temporäre Verzeichnis existiert, und bei Bedarf erstellen
                 if (!System.IO.Directory.Exists(backupFolder))
                 {
                     Trace.WriteLine($"Backup folder does not exist. Creating directory: {backupFolder}");
@@ -400,7 +283,6 @@ namespace Signatur_Verwaltung
                         if (Properties.Settings.Default.ShowProcessNotification == true)
                         {
                             updateIndeterminateToastNotification("Abgeschlossen", "");
-                            Properties.Settings.Default.ShowProcessNotification = false;
                         }
                     }
 
@@ -602,11 +484,11 @@ namespace Signatur_Verwaltung
         }
 
 
-        private void indeterminateToastNotification(string processState, string processTitle, string toastTitle)
+        private void indeterminateToastNotification(string processState, string processTitle)
         {
             var toastContent = new ToastContentBuilder()
             .SetToastDuration(ToastDuration.Long)
-            .AddText(toastTitle)
+            .AddText("Signaturen werden aktualisiert...")
             .AddVisualChild(new AdaptiveProgressBar()
             {
                 Title = new BindableString("processTitle"),
@@ -711,39 +593,24 @@ namespace Signatur_Verwaltung
                     System.IO.Directory.CreateDirectory(TempPath);
                 }
 
-                // Liste der Properties, die NICHT gespeichert werden sollen
-                var ignoredSettings = new HashSet<string>
-        {
-            "SetupCompleted",
-            "ShowProcessNotification",
-        };
-
                 var settingsDict = new Dictionary<string, object>();
-
                 foreach (System.Configuration.SettingsProperty property in Properties.Settings.Default.Properties)
                 {
                     string name = property.Name;
-
-                    if (ignoredSettings.Contains(name))
-                        continue;
-
                     var value = Properties.Settings.Default[name];
                     settingsDict[name] = value;
                 }
 
-                string json = System.Text.Json.JsonSerializer.Serialize(
-                    settingsDict,
-                    new System.Text.Json.JsonSerializerOptions { WriteIndented = true }
-                );
-
+                string json = System.Text.Json.JsonSerializer.Serialize(settingsDict, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
                 System.IO.File.WriteAllText(FilePath, json);
+
+                //MessageBox.Show($"Die Einstellungen wurden erfolgreich in die Datei '{FilePath}' exportiert.", "Export Erfolgreich", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                Trace.WriteLine($"Fehler beim Exportieren der Einstellungen: {ex.Message}");
+                //MessageBox.Show($"Fehler beim Exportieren der Einstellungen: {ex.Message}", "Fehler", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         public static void ImportSettingsFromTempFile()
         {
@@ -769,10 +636,10 @@ namespace Signatur_Verwaltung
                     }
                 }
 
-                // Ã„nderungen speichern
+                // Änderungen speichern
                 Properties.Settings.Default.Save();
 
-                // Anwenden der Ã„nderungen
+                // Anwenden der Änderungen
                 ApplySettings();
 
                 //MessageBox.Show("Die Einstellungen wurden erfolgreich wiederhergestellt und angewendet.", "Import Erfolgreich", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -803,7 +670,7 @@ namespace Signatur_Verwaltung
             }
             else
             {
-                throw new NotSupportedException($"Der Typ '{targetType}' wird nicht unterstÃ¼tzt.");
+                throw new NotSupportedException($"Der Typ '{targetType}' wird nicht unterstützt.");
             }
         }
 
@@ -815,7 +682,7 @@ namespace Signatur_Verwaltung
             clientSecret = Properties.Settings.Default.ClientSecret;
             signatureChannelID = Properties.Settings.Default.SignatureChannelID;
 
-            // Hier kÃ¶nnen Sie weitere Aktualisierungen vornehmen, wenn dies erforderlich ist.
+            // Hier können Sie weitere Aktualisierungen vornehmen, wenn dies erforderlich ist.
         }
 
         private void einstellungenToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -867,7 +734,7 @@ namespace Signatur_Verwaltung
             {
                 var graphClient = GetAuthenticatedGraphClient();
 
-                // Alle ListeneintrÃ¤ge abrufen
+                // Alle Listeneinträge abrufen
                 Trace.WriteLine("Fetching all items from SharePoint list...");
                 var listItems = await graphClient.Sites[siteId]
                     .Lists["Devices"]
@@ -929,7 +796,7 @@ namespace Signatur_Verwaltung
             {
                 var graphClient = GetAuthenticatedGraphClient();
 
-                // Alle ListeneintrÃ¤ge abrufen
+                // Alle Listeneinträge abrufen
                 Trace.WriteLine("Fetching all items from SharePoint list...");
                 var listItems = await graphClient.Sites[siteId]
                     .Lists["Devices"]
@@ -938,7 +805,7 @@ namespace Signatur_Verwaltung
                     .Expand("fields") // Felder explizit anfordern
                     .GetAsync();
 
-                // ÃœberprÃ¼fung: Status = "requested" und UpdateRequestor = "remote"
+                // Überprüfung: Status = "requested" und UpdateRequestor = "remote"
                 var matchingItems = listItems.CurrentPage.Where(item =>
                     item.Fields != null &&
                     item.Fields.AdditionalData != null &&
@@ -959,10 +826,10 @@ namespace Signatur_Verwaltung
 
                         Trace.WriteLine($"Update request detected for device: {deviceName}");
 
-                        // Nur fÃ¼r Remote-Updates das Flag setzen und die Toast-Benachrichtigung anpassen
+                        // Nur für Remote-Updates das Flag setzen und die Toast-Benachrichtigung anpassen
                         isRemoteUpdate = true;
                         await BackupAndUpdateSignatures();
-                        isRemoteUpdate = false; // Direkt nach dem Update zurÃ¼cksetzen
+                        isRemoteUpdate = false; // Direkt nach dem Update zurücksetzen
                     }
                 }
             }
@@ -980,7 +847,7 @@ namespace Signatur_Verwaltung
                 string listName = "Devices"; // Direkt den Listenname setzen
                 string deviceName = Environment.MachineName;
 
-                // Alle ListeneintrÃ¤ge abrufen
+                // Alle Listeneinträge abrufen
                 Trace.WriteLine("Fetching all items from SharePoint list...");
                 var listItems = await graphClient.Sites[siteId]
                     .Lists[listName]
@@ -989,7 +856,7 @@ namespace Signatur_Verwaltung
                     .Expand("fields") // Felder explizit anfordern
                     .GetAsync();
 
-                // Liste aller verfÃ¼gbaren Felder abrufen
+                // Liste aller verfügbaren Felder abrufen
                 Trace.WriteLine("Fetching SharePoint list fields...");
                 var listFields = await graphClient.Sites[siteId]
                     .Lists[listName]
@@ -997,12 +864,12 @@ namespace Signatur_Verwaltung
                     .Request()
                     .GetAsync();
 
-                // Internen Namen fÃ¼r 'AppPlattform', 'DeviceName' und 'AppVersion' validieren
+                // Internen Namen für 'AppPlattform', 'DeviceName' und 'AppVersion' validieren
                 string appPlattformFieldName = listFields.FirstOrDefault(f => f.DisplayName == "AppPlattform")?.Name ?? "AppPlattform";
                 string deviceNameFieldName = listFields.FirstOrDefault(f => f.DisplayName == "DeviceName")?.Name ?? "DeviceName";
                 string appVersionFieldName = listFields.FirstOrDefault(f => f.DisplayName == "AppVersion")?.Name ?? "AppVersion";
 
-                // PrÃ¼fen, ob der aktuelle PC bereits registriert ist
+                // Prüfen, ob der aktuelle PC bereits registriert ist
                 Trace.WriteLine("Filtering items locally...");
                 var existingItem = listItems.CurrentPage.FirstOrDefault(item =>
                     item.Fields != null &&
@@ -1057,7 +924,7 @@ namespace Signatur_Verwaltung
             {
                 string listName = "Devices"; // Name der SharePoint-Liste
 
-                // Alle EintrÃ¤ge aus der Liste abrufen
+                // Alle Einträge aus der Liste abrufen
                 var listItems = await graphClient.Sites[siteId]
                     .Lists[listName]
                     .Items
@@ -1065,7 +932,7 @@ namespace Signatur_Verwaltung
                     .Expand("fields")
                     .GetAsync();
 
-                // Eintrag fÃ¼r das aktuelle GerÃ¤t suchen
+                // Eintrag für das aktuelle Gerät suchen
                 var existingItem = listItems.CurrentPage.FirstOrDefault(item =>
                     item.Fields != null &&
                     item.Fields.AdditionalData != null &&
@@ -1081,7 +948,7 @@ namespace Signatur_Verwaltung
                         string assignedUser = existingItem.Fields.AdditionalData["User"].ToString();
                         Trace.WriteLine($"User field found: {assignedUser}");
 
-                        // Benutzernamen zurÃ¼ckgeben
+                        // Benutzernamen zurückgeben
                         return assignedUser;
                     }
                     else
@@ -1138,40 +1005,7 @@ namespace Signatur_Verwaltung
             }
             else
             {
-                return lastUpdateTime.ToString("dd.MM.yyyy 'um' HH:mm"); // Weiter zurÃ¼ck
-            }
-        }
-
-        private async Task<bool> CanConnectToMicrosoft365(string clientId, string tenantId, string clientSecret)
-        {
-            try
-            {
-                var scopes = new[] { "https://graph.microsoft.com/.default" };
-
-                var confidentialClient = ConfidentialClientApplicationBuilder
-                    .Create(clientId)
-                    .WithTenantId(tenantId)
-                    .WithClientSecret(clientSecret)
-                    .Build();
-
-                var authProvider = new DelegateAuthenticationProvider(async (requestMessage) =>
-                {
-                    var result = await confidentialClient
-                        .AcquireTokenForClient(scopes)
-                        .ExecuteAsync();
-
-                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
-                });
-
-                var graphClient = new GraphServiceClient(authProvider);
-
-                var result = await graphClient.Users.Request().Top(1).GetAsync();
-                return result != null;
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine("Microsoft 365 Verbindung fehlgeschlagen: " + ex.Message);
-                return false;
+                return lastUpdateTime.ToString("dd.MM.yyyy 'um' HH:mm"); // Weiter zurück
             }
         }
     }
