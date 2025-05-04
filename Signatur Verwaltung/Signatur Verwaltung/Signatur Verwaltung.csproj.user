@@ -4,6 +4,9 @@
     <_LastSelectedProfileId>C:\Mac\Home\Documents\Vegilife-Development\SignatureManager\Signatur Verwaltung\Signatur Verwaltung\Properties\PublishProfiles\ClickOnceProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="CheckForUpdates.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Error.cs">
       <SubType>Form</SubType>
     </Compile>
